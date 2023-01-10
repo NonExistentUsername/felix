@@ -5,7 +5,7 @@ class IObserver(ABC):
         super().__init__()
 
     @abstractmethod
-    def notify(self, message: str) -> None:
+    def notify(self, *args, **kwargs) -> None:
         pass
 
 class IObservable(IObserver):
