@@ -1,2 +1,2 @@
-import engine
-import observer
+from .engine import *
+from .observer import *
