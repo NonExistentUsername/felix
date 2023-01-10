@@ -1,2 +1,2 @@
-from engine import *
-from observer import *
+import engine
+import observer
