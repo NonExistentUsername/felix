@@ -1,2 +1,1 @@
-from .interfaces import IEngine
-from .interfaces import IEngineComponent
+from .interfaces import IEngine, IEngineComponent
