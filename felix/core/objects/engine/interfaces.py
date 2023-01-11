@@ -1,10 +1,10 @@
 from abc import ABC, abstractmethod
 import typing as t
 
-from ..observer import Observable
+from ..observer import IObservable
 
 
-class IEngineComponent(Observable):
+class IEngineComponent(IObservable):
     @abstractmethod
     def update_state(self, time_delta: float) -> None:
         pass
