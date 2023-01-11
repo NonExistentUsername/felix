@@ -3,7 +3,7 @@ import random
 import string
 import typing as t
 
-from felix.core.objects.observer import Observable, IObserver, IEvent
+from felix.core.tools.observer import Observable, IObserver, IEvent
 
 @pytest.fixture
 def test_observable_component() -> Observable:
