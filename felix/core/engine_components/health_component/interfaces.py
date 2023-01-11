@@ -2,7 +2,6 @@ import typing as t
 from abc import ABC, abstractmethod
 
 from ...objects.unique_object import ILinkedUniqueObject
-from ...tools.observer import IEvent
 from ...objects.engine import IEngineComponent
 from ..object_component import IObjectEngineComponent
 
@@ -39,7 +38,7 @@ class IHealth(ILinkedUniqueObject):
 
 class IHealthFactory(ABC):
     @abstractmethod
-    def create_object(self, event: IEvent) -> IHealth:
+    def create_object(self, owner_object) -> IHealth:
         pass
 
 class IHealthEngineComponent(IEngineComponent):
