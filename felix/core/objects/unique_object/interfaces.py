@@ -5,12 +5,12 @@ class IUniqueIDGenerator(ABC):
     def create_id(self) -> int:
         pass
 
-class UniqueObject(ABC):
+class IUniqueObject(ABC):
     @abstractmethod
     def get_id(self) -> int:
         pass
 
-class LinkedUniqueObject(UniqueObject):
+class ILinkedUniqueObject(IUniqueObject):
     @abstractmethod
     def get_owner_id(self) -> int:
         pass
