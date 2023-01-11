@@ -25,6 +25,16 @@ class IHealth(ILinkedUniqueObject):
     def max_health(self, new_value: int) -> None:
         pass
 
+    @property
+    @abstractmethod
+    def min_health(self) -> int:
+        pass
+    
+    @min_health.setter
+    @abstractmethod
+    def min_health(self, new_value: int) -> None:
+        pass
+
 
 class IHealthEngineComponent(IEngineComponent):
     @abstractmethod
