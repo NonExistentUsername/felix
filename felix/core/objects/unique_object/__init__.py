@@ -1,1 +1,1 @@
-from .interfaces import IUniqueIDGenerator
+from .interfaces import IUniqueIDGenerator, ILinkedUniqueObject
