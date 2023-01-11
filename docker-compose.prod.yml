@@ -4,7 +4,7 @@ services:
   telegram-bot:
     build: ./
     container_name: felix-telegram-bot
-    hostname: felix-telegram-bot
+    hostname: telegram-bot
     restart: always
     entrypoint: /usr/src/app/entrypoint.sh
     command: python main.py
