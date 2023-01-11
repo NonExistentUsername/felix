@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 
-from objects.unique_object import ILinkedUniqueObject
-from objects.engine import IEngineComponent
-from object_component import IObjectEngineComponent
+from ...objects.unique_object import ILinkedUniqueObject
+from ...objects.engine import IEngineComponent
+from ..object_component import IObjectEngineComponent
 
 class IHealth(ILinkedUniqueObject):
     @property
