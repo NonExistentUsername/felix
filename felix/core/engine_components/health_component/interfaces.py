@@ -2,6 +2,7 @@ import typing as t
 from abc import ABC, abstractmethod
 
 from ...objects.unique_object import ILinkedUniqueObject
+from ...tools.observer import IEvent
 from ...objects.engine import IEngineComponent
 from ..object_component import IObjectEngineComponent
 
@@ -36,10 +37,14 @@ class IHealth(ILinkedUniqueObject):
     def min_health(self, new_value: int) -> None:
         pass
 
+class IHealthFactory(ABC):
+    @abstractmethod
+    def create_object(self, event: IEvent) -> IHealth:
+        pass
 
 class IHealthEngineComponent(IEngineComponent):
     @abstractmethod
-    def register_object_component(self, object_engine_component: IObjectEngineComponent) -> None:
+    def register_object_component(self, object_engine_component: IObjectEngineComponent, health_factory: IHealthFactory) -> None:
         pass
     
     @abstractmethod
