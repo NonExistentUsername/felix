@@ -9,3 +9,8 @@ class UniqueObject(ABC):
     @abstractmethod
     def get_id(self) -> int:
         pass
+
+class LinkedUniqueObject(UniqueObject):
+    @abstractmethod
+    def get_owner_id(self) -> int:
+        pass
