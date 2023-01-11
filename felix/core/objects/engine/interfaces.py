@@ -9,7 +9,12 @@ class IEngineComponent(Observable):
     def update_state(self, time_delta: float) -> None:
         pass
 
+class IEngine(ABC):
+    @abstractmethod
+    def run(self) -> None:
+        pass
+
 class IEngineFactory(ABC):
     @abstractmethod
-    def create(self) -> IEngineComponent:
+    def create(self) -> IEngine:
         pass
