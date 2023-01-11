@@ -1,3 +1,4 @@
+import typing as t
 from abc import ABC, abstractmethod
 
 from ...objects.unique_object import ILinkedUniqueObject
@@ -39,4 +40,8 @@ class IHealth(ILinkedUniqueObject):
 class IHealthEngineComponent(IEngineComponent):
     @abstractmethod
     def register_object_component(self, object_engine_component: IObjectEngineComponent) -> None:
+        pass
+    
+    @abstractmethod
+    def get_health(self, owner_id: int) -> t.Optional[IHealth]:
         pass
