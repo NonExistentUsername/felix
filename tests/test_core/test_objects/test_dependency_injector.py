@@ -2,7 +2,7 @@ import pytest
 import typing as t
 from abc import ABC, abstractmethod
 
-from felix.core.objects.dependency_injector import DependencyInjector
+from felix.core.tools.dependency_injector import DependencyInjector
 
 @pytest.fixture
 def test_di() -> DependencyInjector:

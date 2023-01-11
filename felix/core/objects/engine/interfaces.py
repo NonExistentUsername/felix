@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 import typing as t
 
-from tools.observer import IObservable
+from felix.core.tools.observer import IObservable
 
 
 class IEngineComponent(IObservable):
