@@ -8,12 +8,12 @@ from ..object_component import IObjectEngineComponent
 class IHealth(ILinkedUniqueObject):
     @property
     @abstractmethod
-    def value(self) -> int:
+    def health(self) -> int:
         pass
 
-    @value.setter
+    @health.setter
     @abstractmethod
-    def value(self, new_value: int) -> None:
+    def health(self, new_value: int) -> None:
         pass
     
     @property
