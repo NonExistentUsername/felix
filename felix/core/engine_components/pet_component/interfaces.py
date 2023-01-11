@@ -7,6 +7,4 @@ class IPet(ILinkedUniqueObject):
     pass
 
 class IPetEngineComponent(IObjectEngineComponent):
-    @abstractmethod
-    def create_object(self) -> IPet:
-        pass
+    pass
