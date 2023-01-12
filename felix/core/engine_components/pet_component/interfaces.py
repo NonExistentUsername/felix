@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
-from objects.engine import IEngineComponent
-from objects.unique_object import ILinkedUniqueObject
+from general.engine import IEngineComponent
+from general.unique_object import ILinkedUniqueObject
 from object_component import IObjectEngineComponent
 
 class IPet(ILinkedUniqueObject):
