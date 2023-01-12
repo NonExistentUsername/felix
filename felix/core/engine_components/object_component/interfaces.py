@@ -1,7 +1,7 @@
 import typing as t
 from abc import abstractmethod
 
-from ...objects.engine import IEngineComponent
+from ...general.engine import IEngineComponent
 
 class IObjectEngineComponent(IEngineComponent):
     @abstractmethod
