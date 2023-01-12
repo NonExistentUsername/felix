@@ -15,11 +15,11 @@ class IEngine(ABC):
     def run(self) -> None:
         pass
 
+    @abstractmethod
+    def get_di_container(self) -> IDependencyInjector:
+        pass
+    
 class IEngineFactory(ABC):
     @abstractmethod
     def create(self) -> IEngine:
-        pass
-
-    @abstractmethod
-    def get_di_container(self) -> IDependencyInjector:
         pass
