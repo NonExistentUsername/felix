@@ -1,5 +1,5 @@
 from .interfaces import IHealth
-from ...objects.unique_object.mixins import LinkedUniqueObjectMixin
+from ...general.unique_object.mixins import LinkedUniqueObjectMixin
 
 class Health(IHealth, LinkedUniqueObjectMixin):
     def __init__(self, id: int, owner_id: int, health: int, min_health: int = 0, max_health: int = 100) -> None:
