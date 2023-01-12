@@ -34,8 +34,11 @@ class PetEngineComponent(IPetEngineComponent, Observable):
         super().__init__()
         self.__pet_factory = pet_factory
 
-    def create_object(self, owner_id: int) -> IPet:
+    def create_pet(self, owner_id: int) -> IPet:
         return self.__pet_factory.create(owner_id)
 
     def get_pet(self, owner_id: int) -> t.Optional[IPet]:
         return None
+
+    def update_state(self, time_delta: float) -> None:
+        pass
