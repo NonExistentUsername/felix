@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from objects.engine import IEngineComponent
+from ...general.engine import IEngineComponent
 
 class IPlayer(ABC):
     @property
