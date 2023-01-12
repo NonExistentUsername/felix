@@ -8,6 +8,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.10"
 pytelegrambotapi = "^4.9.0"
+sqlalchemy = "^1.4.46"
 
 
 [tool.poetry.group.dev.dependencies]
