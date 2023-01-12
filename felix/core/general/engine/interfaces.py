@@ -1,7 +1,8 @@
 from abc import ABC, abstractmethod
 import typing as t
 
-from felix.core.tools.observer import IObservable
+from ...tools.observer import IObservable
+from ...tools.dependency_injector import IDependencyInjector
 
 
 class IEngineComponent(IObservable):
@@ -17,4 +18,8 @@ class IEngine(ABC):
 class IEngineFactory(ABC):
     @abstractmethod
     def create(self) -> IEngine:
+        pass
+
+    @abstractmethod
+    def get_di_container(self) -> IDependencyInjector:
         pass
