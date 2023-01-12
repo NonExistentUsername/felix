@@ -3,7 +3,6 @@ from abc import ABC, abstractmethod
 
 from ...general.unique_object import ILinkedUniqueObject
 from ...general.engine import IEngineComponent
-from ..object_component import IObjectEngineComponent
 
 class IHealth(ILinkedUniqueObject):
     @property
@@ -43,7 +42,7 @@ class IHealthFactory(ABC):
 
 class IHealthEngineComponent(IEngineComponent):
     @abstractmethod
-    def register_object_component(self, object_engine_component: IObjectEngineComponent, health_factory: IHealthFactory) -> None:
+    def register_object_component(self, object_engine_component: IEngineComponent, health_factory: IHealthFactory) -> None:
         pass
     
     @abstractmethod
