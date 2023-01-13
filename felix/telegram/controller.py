@@ -56,9 +56,18 @@ class TelegramController(IController, IObserver):
             return
 
         if event.command == "create_pet":
-            self.__pet_engine_component.create_pet(
-                self.__get_or_create_chat(event.kwargs["chat_id"]).get_id()
-            )
+
+            try:
+                chat_id: int = int(event.kwargs["chat_id"])
+            except Exception as e:
+                return
+
+            try:
+                self.__pet_engine_component.create_pet(
+                    self.__get_or_create_chat(chat_id).get_id()
+                )
+            except ValueError as e:
+                tbot.send_message(chat_id, "Can't create pet.")
 
     def start(self) -> None:
         tbot.infinity_polling()
