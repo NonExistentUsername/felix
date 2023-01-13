@@ -39,6 +39,8 @@ class TelegramController(IController, IObserver):
 
         self.__telegram_chat_manager: ITelegramChatManager = telegram_chat_manager
 
+        command_observable_component.add_observer(self)
+
     def __get_or_create_chat(self, chat_id: int) -> ITelegramChat:
         chat_instance: t.Optional[
             ITelegramChat
