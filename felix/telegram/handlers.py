@@ -1,7 +1,7 @@
 from telebot import types
 from . import tbot
 
-from ...core.tools import Observable
+from ..core.tools import Observable
 from .events import BotCommandEvent
 
 command_observable_component = Observable()

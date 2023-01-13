@@ -1,13 +1,13 @@
 import typing as t
 
-from ...controller import IController
-from ...core.tools import IDependencyInjector, IObserver, IEvent
+from ..controller import IController
+from ..core.tools import IDependencyInjector, IObserver, IEvent
 from .handlers import command_observable_component
 from .bot import tbot
 from .events import BotCommandEvent
 
-from ...core.engine_components.pet_component import IPetEngineComponent
-from ...core.engine_components.telegram_components.chat_manager import (
+from ..core.engine_components.pet_component import IPetEngineComponent
+from ..core.engine_components.telegram_components.chat_manager import (
     ITelegramChatManager,
 )
 

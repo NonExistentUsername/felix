@@ -1,4 +1,4 @@
-from ...core.tools.observer import IEvent
+from ..core.tools.observer import IEvent
 
 
 class BotCommandEvent(IEvent):
