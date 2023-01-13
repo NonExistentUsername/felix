@@ -7,6 +7,10 @@ from engine_components.pet_component import (
     ChickenPetFactory,
     DefaultDBPetFactory,
 )
+from engine_components.telegram_components.chat_manager import (
+    TelegramChatManager,
+    ITelegramChatManager,
+)
 
 
 class PetsEngine(EngineRunMixin, IEngine):
@@ -22,6 +26,9 @@ class PetsEngine(EngineRunMixin, IEngine):
         )
         self.__di_conrainer.register_singleton(
             IPetEngineComponent, self.__pet_component
+        )
+        self.__di_conrainer.register_singleton(
+            ITelegramChatManager, TelegramChatManager(self.__di_conrainer)
         )
 
     def update_state(self, time_delta: float) -> None:
