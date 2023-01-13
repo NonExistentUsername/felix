@@ -14,11 +14,11 @@ from ..core.engine_components.telegram_components.chat_manager import (
 
 
 class TelegramController(IController, IObserver):
-    def __init__(self, engine_di_controller: IDependencyInjector) -> None:
+    def __init__(self, engine_di_container: IDependencyInjector) -> None:
         super().__init__()
         pet_engine_component: t.Optional[
             IPetEngineComponent
-        ] = engine_di_controller.get_singleton(IPetEngineComponent)
+        ] = engine_di_container.get_singleton(IPetEngineComponent)
 
         if pet_engine_component is None:
             raise ValueError("Can't get engine component for pets")
@@ -27,7 +27,7 @@ class TelegramController(IController, IObserver):
 
         telegram_chat_manager: t.Optional[
             ITelegramChatManager
-        ] = engine_di_controller.get_singleton(ITelegramChatManager)
+        ] = engine_di_container.get_singleton(ITelegramChatManager)
 
         if telegram_chat_manager is None:
             raise ValueError("Can't get engine component for telegram chats")
