@@ -1,6 +1,12 @@
 import os
-from telebot import TeleBot
+import logging
+from telebot import TeleBot, logger
 
 TG_BOT_TOKEN = str(os.getenv("TG_BOT_TOKEN"))
 
 tbot: TeleBot = TeleBot(TG_BOT_TOKEN)
+
+DEBUG = os.getenv("DEBUB") == "True"
+
+if DEBUG:
+    logger.setLevel(logging.DEBUG)
