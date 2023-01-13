@@ -3,6 +3,7 @@ from sqlalchemy import Column, String, Integer, ForeignKey
 
 from ....general.unique_object import UniqueObjectMixin, IUniqueIDGenerator
 from ....tools.dependency_injector import IDependencyInjector
+from ....tools.observer import Observable
 from ....database import Base, database_session
 
 from .interfaces import ITelegramChat, ITelegramChatManager
@@ -25,7 +26,7 @@ class DBTelegramChat(ITelegramChat, UniqueObjectMixin):
         return int(self.__db_instance.chat_id)  # type: ignore
 
 
-class TelegramChatManager(ITelegramChatManager):
+class TelegramChatManager(ITelegramChatManager, Observable):
     def __init__(self, di_container: IDependencyInjector) -> None:
         super().__init__()
         id_generator: t.Optional[IUniqueIDGenerator] = di_container.get_singleton(
@@ -53,3 +54,6 @@ class TelegramChatManager(ITelegramChatManager):
                 db.refresh(chat_instance)
 
             return DBTelegramChat(chat_instance)
+
+    def update_state(self, time_delta: float) -> None:
+        pass
