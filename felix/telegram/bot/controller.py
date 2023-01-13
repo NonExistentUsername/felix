@@ -8,10 +8,13 @@ from .events import BotCommandEvent
 
 from ...core.engine_components.pet_component import IPetEngineComponent
 
+
 class TelegramController(IController, IObserver):
     def __init__(self, engine_di_controller: IDependencyInjector) -> None:
         super().__init__()
-        pet_engine_component: t.Optional[IPetEngineComponent] = engine_di_controller.get_singleton(IPetEngineComponent)
+        pet_engine_component: t.Optional[
+            IPetEngineComponent
+        ] = engine_di_controller.get_singleton(IPetEngineComponent)
 
         if pet_engine_component is None:
             raise ValueError("Can't get engine component for pets")

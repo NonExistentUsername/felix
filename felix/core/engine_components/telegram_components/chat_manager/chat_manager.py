@@ -14,19 +14,23 @@ class DBTelegramChatModel(Base):
     id = Column(Integer, primary_key=True)
     chat_id = Column(Integer, index=True)
 
+
 class DBTelegramChat(ITelegramChat, UniqueObjectMixin):
     def __init__(self, instance: DBTelegramChatModel) -> None:
-        super().__init__(id=int(instance.id)) # type: ignore
+        super().__init__(id=int(instance.id))  # type: ignore
         self.__db_instance = instance
-    
+
     @property
     def chat_id(self) -> int:
-        return int(self.__db_instance.chat_id) # type: ignore
+        return int(self.__db_instance.chat_id)  # type: ignore
+
 
 class TelegramChatManager(ITelegramChatManager):
     def __init__(self, di_container: IDependencyInjector) -> None:
         super().__init__()
-        id_generator: t.Optional[IUniqueIDGenerator] = di_container.get_singleton(IUniqueIDGenerator)
+        id_generator: t.Optional[IUniqueIDGenerator] = di_container.get_singleton(
+            IUniqueIDGenerator
+        )
         if id_generator == None:
             raise ValueError("Can't get id generator from DI container")
 
@@ -34,14 +38,18 @@ class TelegramChatManager(ITelegramChatManager):
 
     def get_chat(self, chat_id: int) -> ITelegramChat:
         with database_session() as db:
-            chat_instance: t.Optional[DBTelegramChatModel] = db.query(DBTelegramChatModel).filter(DBTelegramChatModel.chat_id == chat_id).first()
+            chat_instance: t.Optional[DBTelegramChatModel] = (
+                db.query(DBTelegramChatModel)
+                .filter(DBTelegramChatModel.chat_id == chat_id)
+                .first()
+            )
 
             if chat_instance is None:
-                chat_instance = DBTelegramChatModel(id=self.__id_generator.create_id(), chat_id=chat_id)
+                chat_instance = DBTelegramChatModel(
+                    id=self.__id_generator.create_id(), chat_id=chat_id
+                )
                 db.add(chat_instance)
                 db.commit()
                 db.refresh(chat_instance)
-            
-            return DBTelegramChat(chat_instance)
-            
 
+            return DBTelegramChat(chat_instance)

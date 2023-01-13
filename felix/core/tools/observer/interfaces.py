@@ -1,7 +1,9 @@
 from abc import ABC, abstractmethod
 
+
 class IEvent(ABC):
     pass
+
 
 class IObserver(ABC):
     def __init__(self) -> None:
@@ -10,6 +12,7 @@ class IObserver(ABC):
     @abstractmethod
     def notify(self, event: IEvent) -> None:
         pass
+
 
 class IObservable(IObserver):
     def __init__(self) -> None:

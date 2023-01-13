@@ -2,6 +2,7 @@ import typing as t
 
 from .interfaces import IObservable, IObserver, IEvent
 
+
 class Observable(IObservable):
     def __init__(self) -> None:
         super().__init__()

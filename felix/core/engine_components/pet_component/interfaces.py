@@ -3,11 +3,13 @@ from abc import ABC, abstractmethod
 from ...general.engine import IEngineComponent
 from ...general.unique_object import ILinkedUniqueObject
 
+
 class IPet(ILinkedUniqueObject):
     @property
     @abstractmethod
     def type(self) -> str:
         pass
+
 
 class IPetFactory(ABC):
     @abstractmethod
@@ -17,6 +19,7 @@ class IPetFactory(ABC):
     @abstractmethod
     def get(self, owner_id: int) -> IPet:
         pass
+
 
 class IPetEngineComponent(IEngineComponent):
     @abstractmethod

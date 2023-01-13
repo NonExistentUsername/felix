@@ -10,6 +10,7 @@ class IEngineComponent(IObservable):
     def update_state(self, time_delta: float) -> None:
         pass
 
+
 class IEngine(ABC):
     @abstractmethod
     def run(self) -> None:
@@ -18,7 +19,8 @@ class IEngine(ABC):
     @abstractmethod
     def get_di_container(self) -> IDependencyInjector:
         pass
-    
+
+
 class IEngineFactory(ABC):
     @abstractmethod
     def create(self) -> IEngine:
