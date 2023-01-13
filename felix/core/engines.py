@@ -1,13 +1,13 @@
-from general.engine import IEngine, EngineRunMixin
-from general.unique_object import UUID1, IUniqueIDGenerator
-from tools.dependency_injector import IDependencyInjector, DependencyInjector
-from engine_components.pet_component import (
+from .general.engine import IEngine, EngineRunMixin
+from .general.unique_object import UUID1, IUniqueIDGenerator
+from .tools.dependency_injector import IDependencyInjector, DependencyInjector
+from .engine_components.pet_component import (
     PetEngineComponent,
     IPetEngineComponent,
     ChickenPetFactory,
     DefaultDBPetFactory,
 )
-from engine_components.telegram_components.chat_manager import (
+from .engine_components.telegram_components.chat_manager import (
     TelegramChatManager,
     ITelegramChatManager,
 )

@@ -1,7 +1,7 @@
 import typing as t
 from abc import ABC, abstractmethod
-from ...general.engine import IEngineComponent
-from ...general.unique_object import ILinkedUniqueObject
+from core.general.engine import IEngineComponent
+from core.general.unique_object import ILinkedUniqueObject
 
 
 class IPet(ILinkedUniqueObject):

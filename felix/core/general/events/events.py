@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from ...tools.observer import IEvent
+from core.tools.observer import IEvent
 
 
 class ObjectCreated(IEvent):

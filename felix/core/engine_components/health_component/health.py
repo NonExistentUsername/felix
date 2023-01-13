@@ -1,5 +1,5 @@
 from .interfaces import IHealth
-from ...general.unique_object.mixins import LinkedUniqueObjectMixin
+from core.general.unique_object.mixins import LinkedUniqueObjectMixin
 
 
 class Health(IHealth, LinkedUniqueObjectMixin):

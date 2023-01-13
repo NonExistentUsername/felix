@@ -1,5 +1,5 @@
-from ...tools.observer import IEvent
-from ...general.events import ObjectCreated
+from core.tools.observer import IEvent
+from core.general.events import ObjectCreated
 from .interfaces import IPet
 
 

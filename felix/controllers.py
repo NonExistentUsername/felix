@@ -1,5 +1,5 @@
-from .controller.interfaces import IController
-from .core.engines import PetsEngine
+from controller.interfaces import IController
+from core.engines import PetsEngine
 from telegram.controller import TelegramController
 import threading
 

@@ -4,11 +4,11 @@ from sqlalchemy import Column, String, Integer, ForeignKey
 from .interfaces import IPet, IPetFactory, IPetEngineComponent
 from .events import PetCreated
 
-from ...database import Base
-from ...database import Base, database_session
+from core.database import Base
+from core.database import Base, database_session
 
-from ...general.unique_object import LinkedUniqueObjectMixin, IUniqueIDGenerator
-from ...tools import Observable, IDependencyInjector
+from core.general.unique_object import LinkedUniqueObjectMixin, IUniqueIDGenerator
+from core.tools import Observable, IDependencyInjector
 
 
 class DBPetModel(Base):

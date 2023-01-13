@@ -1,10 +1,10 @@
 import typing as t
 from sqlalchemy import Column, String, Integer, ForeignKey
 
-from ....general.unique_object import UniqueObjectMixin, IUniqueIDGenerator
-from ....tools.dependency_injector import IDependencyInjector
-from ....tools.observer import Observable
-from ....database import Base, database_session
+from core.general.unique_object import UniqueObjectMixin, IUniqueIDGenerator
+from core.tools.dependency_injector import IDependencyInjector
+from core.tools.observer import Observable
+from core.database import Base, database_session
 
 from .interfaces import ITelegramChat, ITelegramChatManager
 

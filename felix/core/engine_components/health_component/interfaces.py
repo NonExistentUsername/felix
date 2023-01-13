@@ -1,8 +1,8 @@
 import typing as t
 from abc import ABC, abstractmethod
 
-from ...general.unique_object import ILinkedUniqueObject
-from ...general.engine import IEngineComponent
+from core.general.unique_object import ILinkedUniqueObject
+from core.general.engine import IEngineComponent
 
 
 class IHealth(ILinkedUniqueObject):

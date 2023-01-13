@@ -3,10 +3,10 @@ from abc import ABC, abstractmethod
 
 from .bot import tbot
 
-from ..core.tools.observer import IObserver, IEvent
-from ..core.tools.dependency_injector import IDependencyInjector
-from ..core.engine_components.pet_component import PetCreated
-from ..core.engine_components.telegram_components.chat_manager import (
+from core.tools.observer import IObserver, IEvent
+from core.tools.dependency_injector import IDependencyInjector
+from core.engine_components.pet_component import PetCreated
+from core.engine_components.telegram_components.chat_manager import (
     ITelegramChatManager,
     ITelegramChat,
 )
