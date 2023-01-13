@@ -1,5 +1,5 @@
 import typing as t
-from sqlalchemy import Column, String, Integer, ForeignKey
+from sqlalchemy import Column, String, ForeignKey, BigInteger, Numeric, DECIMAL
 
 from .interfaces import IPet, IPetFactory, IPetEngineComponent
 from .events import PetCreated
@@ -14,9 +14,15 @@ from core.tools import Observable, IDependencyInjector
 class DBPetModel(Base):
     __tablename__ = "pets"
 
-    id = Column(Integer, primary_key=True)
-    owner_id = Column(Integer, index=True)
-    type = Column(String)
+    id = Column(
+        Numeric(40, 0),
+        primary_key=True,
+        nullable=False,
+        unique=True,
+        autoincrement=False,
+    )
+    owner_id = Column(Numeric(40, 0), nullable=False)
+    type = Column(String(63))
 
 
 class Pet(IPet, LinkedUniqueObjectMixin):

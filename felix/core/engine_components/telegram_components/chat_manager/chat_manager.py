@@ -1,5 +1,5 @@
 import typing as t
-from sqlalchemy import Column, String, Integer, ForeignKey
+from sqlalchemy import Column, String, BigInteger, ForeignKey, Numeric
 
 from core.general.unique_object import UniqueObjectMixin, IUniqueIDGenerator
 from core.tools.dependency_injector import IDependencyInjector
@@ -12,8 +12,14 @@ from .interfaces import ITelegramChat, ITelegramChatManager
 class DBTelegramChatModel(Base):
     __tablename__ = "talagram_chat"
 
-    id = Column(Integer, primary_key=True)
-    chat_id = Column(Integer, index=True)
+    id = Column(
+        Numeric(40, 0),
+        nullable=False,
+        primary_key=True,
+        unique=True,
+        autoincrement=False,
+    )
+    chat_id = Column(Numeric(40, 0), nullable=False)
 
 
 class DBTelegramChat(ITelegramChat, UniqueObjectMixin):
