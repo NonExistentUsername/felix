@@ -9,6 +9,7 @@ from .events import BotCommandEvent
 from ..core.engine_components.pet_component import IPetEngineComponent
 from ..core.engine_components.telegram_components.chat_manager import (
     ITelegramChatManager,
+    ITelegramChat,
 )
 
 
@@ -33,13 +34,23 @@ class TelegramController(IController, IObserver):
 
         self.__telegram_chat_manager: ITelegramChatManager = telegram_chat_manager
 
+    def __get_or_create_chat(self, chat_id: int) -> ITelegramChat:
+        chat_instance: t.Optional[
+            ITelegramChat
+        ] = self.__telegram_chat_manager.get_chat(telegram_chat_id=chat_id)
+
+        if chat_instance is not None:
+            return chat_instance
+
+        return self.__telegram_chat_manager.create_chat(chat_id)
+
     def notify(self, event: IEvent) -> None:
         if not isinstance(event, BotCommandEvent):
             return
 
         if event.command == "create_pet":
             self.__pet_engine_component.create_pet(
-                self.__telegram_chat_manager.get_chat(event.kwargs["chat_id"]).get_id()
+                self.__get_or_create_chat(event.kwargs["chat_id"]).get_id()
             )
 
     def start(self) -> None:
