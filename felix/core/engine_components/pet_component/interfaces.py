@@ -14,6 +14,10 @@ class IPetFactory(ABC):
     def create(self, owner_id: int) -> IPet:
         pass
 
+    @abstractmethod
+    def get(self, owner_id: int) -> IPet:
+        pass
+
 class IPetEngineComponent(IEngineComponent):
     @abstractmethod
     def create_pet(self, owner_id: int) -> IPet:
