@@ -14,7 +14,7 @@ class ITelegramChat(IUniqueObject):
 
 class ITelegramChatManager(IEngineComponent):
     @abstractmethod
-    def create_chat(self, chat_id: int) -> ITelegramChat:
+    def create_chat(self, telegram_chat_id: int) -> ITelegramChat:
         pass
 
     @abstractmethod
