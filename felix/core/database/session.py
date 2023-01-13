@@ -1,5 +1,6 @@
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, Session
+from contextlib import contextmanager
 import os
 
 DB_USER = "root"
@@ -19,3 +20,11 @@ engine = create_engine(
 )
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+@contextmanager
+def database_session():
+    ssession: Session = SessionLocal()
+    try:
+        yield ssession
+    finally:
+        ssession.close()
