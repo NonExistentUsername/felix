@@ -2,6 +2,8 @@ import typing as t
 from sqlalchemy import Column, String, Integer, ForeignKey
 
 from .interfaces import IPet, IPetFactory, IPetEngineComponent
+from .events import PetCreated
+
 from ...database import Base
 from ...database import Base, database_session
 
@@ -104,7 +106,10 @@ class PetEngineComponent(IPetEngineComponent, Observable):
         if self.get_pet(owner_id) is not None:
             raise ValueError("Pet for this object is already created")
 
-        return self.__pet_factory.create(owner_id)
+        pet_instance = self.__pet_factory.create(owner_id)
+        self.notify(PetCreated(pet_instance))
+
+        return pet_instance
 
     def get_pet(self, owner_id: int) -> t.Optional[IPet]:
         return self.__pet_factory.get(owner_id)
