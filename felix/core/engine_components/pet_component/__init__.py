@@ -7,3 +7,4 @@ from .pets import (
     DefaultDBPetFactory,
     DefaultPetFactory,
 )
+from .events import PetCreated
