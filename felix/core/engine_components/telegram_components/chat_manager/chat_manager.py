@@ -37,21 +37,36 @@ class TelegramChatManager(ITelegramChatManager, Observable):
 
         self.__id_generator: IUniqueIDGenerator = id_generator
 
-    def get_chat(self, chat_id: int) -> ITelegramChat:
+    def create_chat(self, telegram_chat_id: int) -> ITelegramChat:
         with database_session() as db:
             chat_instance: t.Optional[DBTelegramChatModel] = (
                 db.query(DBTelegramChatModel)
-                .filter(DBTelegramChatModel.chat_id == chat_id)
+                .filter(DBTelegramChatModel.chat_id == telegram_chat_id)
+                .first()
+            )
+
+            if chat_instance is not None:
+                raise ValueError("Chat already created")
+
+            chat_instance = DBTelegramChatModel(
+                id=self.__id_generator.create_id(), chat_id=telegram_chat_id
+            )
+            db.add(chat_instance)
+            db.commit()
+            db.refresh(chat_instance)
+
+            return DBTelegramChat(chat_instance)
+
+    def get_chat(self, object_id: int) -> t.Optional[ITelegramChat]:
+        with database_session() as db:
+            chat_instance: t.Optional[DBTelegramChatModel] = (
+                db.query(DBTelegramChatModel)
+                .filter(DBTelegramChatModel.id == object_id)
                 .first()
             )
 
             if chat_instance is None:
-                chat_instance = DBTelegramChatModel(
-                    id=self.__id_generator.create_id(), chat_id=chat_id
-                )
-                db.add(chat_instance)
-                db.commit()
-                db.refresh(chat_instance)
+                return None
 
             return DBTelegramChat(chat_instance)
 
