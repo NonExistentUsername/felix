@@ -5,6 +5,7 @@ from ..core.tools import IDependencyInjector, IObserver, IEvent
 from .handlers import command_observable_component
 from .bot import tbot
 from .events import BotCommandEvent
+from .listeners import EngineUpdatesListener
 
 from ..core.engine_components.pet_component import IPetEngineComponent
 from ..core.engine_components.telegram_components.chat_manager import (
@@ -24,6 +25,10 @@ class TelegramController(IController, IObserver):
             raise ValueError("Can't get engine component for pets")
 
         self.__pet_engine_component: IPetEngineComponent = pet_engine_component
+
+        self.__pet_engine_component.add_observer(
+            EngineUpdatesListener(engine_di_container)
+        )
 
         telegram_chat_manager: t.Optional[
             ITelegramChatManager
