@@ -57,13 +57,24 @@ class TelegramChatManager(ITelegramChatManager, Observable):
 
             return DBTelegramChat(chat_instance)
 
-    def get_chat(self, object_id: int) -> t.Optional[ITelegramChat]:
+    def get_chat(
+        self,
+        object_id: t.Optional[int] = None,
+        telegram_chat_id: t.Optional[int] = None,
+    ) -> t.Optional[ITelegramChat]:
+        if object_id is None and telegram_chat_id is None:
+            raise ValueError("Information not provided")
+
         with database_session() as db:
-            chat_instance: t.Optional[DBTelegramChatModel] = (
-                db.query(DBTelegramChatModel)
-                .filter(DBTelegramChatModel.id == object_id)
-                .first()
-            )
+            db_query = db.query(DBTelegramChatModel)
+
+            if object_id:
+                db_query.filter(DBTelegramChatModel.id == object_id)
+
+            if telegram_chat_id:
+                db_query.filter(DBTelegramChatModel.chat_id == telegram_chat_id)
+
+            chat_instance: t.Optional[DBTelegramChatModel] = db_query.first()
 
             if chat_instance is None:
                 return None

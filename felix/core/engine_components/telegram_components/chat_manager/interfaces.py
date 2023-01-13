@@ -18,5 +18,9 @@ class ITelegramChatManager(IEngineComponent):
         pass
 
     @abstractmethod
-    def get_chat(self, object_id: int) -> t.Optional[ITelegramChat]:
+    def get_chat(
+        self,
+        object_id: t.Optional[int] = None,
+        telegram_chat_id: t.Optional[int] = None,
+    ) -> t.Optional[ITelegramChat]:
         pass
