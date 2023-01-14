@@ -17,6 +17,7 @@ from core.engine_components.telegram_components.chat_manager import (
 
 from core.tools.dependency_injector import IDependencyInjector
 from .events import BotCommandEvent
+from .messages import txt
 
 DEBUG = os.getenv("DEBUG") == "True"
 logger = logging.Logger("*", logging.DEBUG)
@@ -61,12 +62,13 @@ class BotCommandsController:
             logger.exception(e)
             return
 
-        try:
-            self.__pet_engine_component.create_pet(
-                self.__get_or_create_chat(chat_id).get_id()
-            )
-        except ValueError as e:
-            tbot.send_message(chat_id, "Can't create pet.")
+        tg_chat: ITelegramChat = self.__get_or_create_chat(chat_id)
+
+        if self.__pet_engine_component.get_pet(tg_chat.get_id()) is not None:
+            tbot.send_message(chat_id, txt("ua", "pet_already_created"))
+            return
+
+        self.__pet_engine_component.create_pet(tg_chat.get_id())
 
     def process_command(self, command_event: BotCommandEvent) -> None:
         if command_event.command in self.__command_event_to_method:

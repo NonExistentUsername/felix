@@ -10,6 +10,7 @@ from core.engine_components.telegram_components.chat_manager import (
     ITelegramChatManager,
     ITelegramChat,
 )
+from .messages import txt
 
 
 class EngineUpdatesListener(IObserver):
@@ -36,4 +37,4 @@ class EngineUpdatesListener(IObserver):
             if chat_instance is None:
                 return
 
-            tbot.send_message(chat_instance.chat_id, "Pet created.")
+            tbot.send_message(chat_instance.chat_id, txt("ua", "pet_created"))
