@@ -1,4 +1,6 @@
 import typing as t
+import os
+import logging
 
 from controller import IController
 from core.tools import IDependencyInjector, IObserver, IEvent
@@ -15,6 +17,9 @@ from core.engine_components.telegram_components.chat_manager import (
 
 from core.tools.dependency_injector import IDependencyInjector
 from .events import BotCommandEvent
+
+DEBUG = os.getenv("DEBUG") == "True"
+logger = logging.Logger("*", logging.DEBUG)
 
 
 class BotCommandsController:
@@ -37,6 +42,8 @@ class BotCommandsController:
 
         self.__telegram_chat_manager: ITelegramChatManager = telegram_chat_manager
 
+        self.__command_event_to_method = {"create_pet": self.__create_pet}
+
     def __get_or_create_chat(self, chat_id: int) -> ITelegramChat:
         chat_instance: t.Optional[
             ITelegramChat
@@ -47,17 +54,25 @@ class BotCommandsController:
 
         return self.__telegram_chat_manager.create_chat(chat_id)
 
+    def __create_pet(self, command_event: BotCommandEvent) -> None:
+        try:
+            chat_id: int = int(command_event.kwargs["chat_id"])
+        except Exception as e:
+            logger.exception(e)
+            return
+
+        try:
+            self.__pet_engine_component.create_pet(
+                self.__get_or_create_chat(chat_id).get_id()
+            )
+        except ValueError as e:
+            tbot.send_message(chat_id, "Can't create pet.")
+
     def process_command(self, command_event: BotCommandEvent) -> None:
-        if command_event.command == "create_pet":
-
+        if command_event.command in self.__command_event_to_method:
             try:
-                chat_id: int = int(command_event.kwargs["chat_id"])
+                self.__command_event_to_method[command_event.command](command_event)
             except Exception as e:
-                return
-
-            try:
-                self.__pet_engine_component.create_pet(
-                    self.__get_or_create_chat(chat_id).get_id()
-                )
-            except ValueError as e:
-                tbot.send_message(chat_id, "Can't create pet.")
+                logger.exception(e)
+        else:
+            logging.exception(ValueError("ignored"))
