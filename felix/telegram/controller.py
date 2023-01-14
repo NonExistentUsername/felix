@@ -12,11 +12,13 @@ from core.engine_components.telegram_components.chat_manager import (
     ITelegramChatManager,
     ITelegramChat,
 )
+from .commands_controller import BotCommandsController
 
 
 class TelegramController(IController, IObserver):
     def __init__(self, engine_di_container: IDependencyInjector) -> None:
         super().__init__()
+
         pet_engine_component: t.Optional[
             IPetEngineComponent
         ] = engine_di_container.get_singleton(IPetEngineComponent)
@@ -30,44 +32,13 @@ class TelegramController(IController, IObserver):
             EngineUpdatesListener(engine_di_container)
         )
 
-        telegram_chat_manager: t.Optional[
-            ITelegramChatManager
-        ] = engine_di_container.get_singleton(ITelegramChatManager)
-
-        if telegram_chat_manager is None:
-            raise ValueError("Can't get engine component for telegram chats")
-
-        self.__telegram_chat_manager: ITelegramChatManager = telegram_chat_manager
-
         command_observable_component.add_observer(self)
 
-    def __get_or_create_chat(self, chat_id: int) -> ITelegramChat:
-        chat_instance: t.Optional[
-            ITelegramChat
-        ] = self.__telegram_chat_manager.get_chat(telegram_chat_id=chat_id)
-
-        if chat_instance is not None:
-            return chat_instance
-
-        return self.__telegram_chat_manager.create_chat(chat_id)
+        self.__bot_commands_controller = BotCommandsController(engine_di_container)
 
     def notify(self, event: IEvent) -> None:
-        if not isinstance(event, BotCommandEvent):
-            return
-
-        if event.command == "create_pet":
-
-            try:
-                chat_id: int = int(event.kwargs["chat_id"])
-            except Exception as e:
-                return
-
-            try:
-                self.__pet_engine_component.create_pet(
-                    self.__get_or_create_chat(chat_id).get_id()
-                )
-            except ValueError as e:
-                tbot.send_message(chat_id, "Can't create pet.")
+        if isinstance(event, BotCommandEvent):
+            self.__bot_commands_controller.process_command(event)
 
     def start(self) -> None:
         tbot.infinity_polling()
