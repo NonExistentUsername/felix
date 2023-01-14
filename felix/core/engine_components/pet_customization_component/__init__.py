@@ -1,1 +1,5 @@
-from .interfaces import IPetCustomization, IPetCustomizationComponent
+from .interfaces import (
+    IPetCustomization,
+    IPetCustomizationComponent,
+    IPetCustomizationFactory,
+)

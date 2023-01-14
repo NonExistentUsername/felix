@@ -16,6 +16,12 @@ class IPetCustomization(IUniqueObject):
         pass
 
 
+class IPetCustomizationFactory(ABC):
+    @abstractmethod
+    def create(self, pet_id: int) -> IPetCustomization:
+        pass
+
+
 class IPetCustomizationComponent(IEngineComponent):
     @abstractmethod
     def get_pet_customization(self, pet_id: int) -> IPetCustomization:
