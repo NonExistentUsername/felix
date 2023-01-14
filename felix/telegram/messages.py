@@ -1,8 +1,7 @@
 import os
 import json
 
-_MESSAGES_FILE_PATH = str(os.getenv("MESSAGES_FILE_PATH"))
-_MESSAGES = json.load(open(_MESSAGES_FILE_PATH))
+_MESSAGES = json.load(open("file"))
 
 
 def txt(country_code: str, text_key: str) -> str:
