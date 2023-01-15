@@ -73,7 +73,9 @@ class TelegramChatManager(ITelegramChatManager, Observable):
                 raise ValueError("Chat already created")
 
             chat_instance = DBTelegramChatModel(
-                id=self.__id_generator.create_id(), chat_id=telegram_chat_id
+                id=self.__id_generator.create_id(),
+                chat_id=telegram_chat_id,
+                language_code="en",
             )
             db.add(chat_instance)
             db.commit()
