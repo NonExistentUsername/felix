@@ -7,6 +7,11 @@ from .engine_components.pet_component import (
     ChickenPetFactory,
     DefaultDBPetFactory,
 )
+from .engine_components.pet_customization_component import (
+    IPetCustomizationEngineComponent,
+    PetCustomizationFactory,
+    PetCustomizationEngineComponent,
+)
 from .engine_components.telegram_components.chat_manager import (
     TelegramChatManager,
     ITelegramChatManager,
@@ -26,6 +31,12 @@ class PetsEngine(EngineRunMixin, IEngine):
         )
         self.__di_conrainer.register_singleton(
             IPetEngineComponent, self.__pet_component
+        )
+        self.__pet_customization_component = PetCustomizationEngineComponent(
+            PetCustomizationFactory(self.__di_conrainer, "Name")
+        )
+        self.__di_conrainer.register_singleton(
+            IPetCustomizationEngineComponent, self.__pet_customization_component
         )
         self.__di_conrainer.register_singleton(
             ITelegramChatManager, TelegramChatManager(self.__di_conrainer)
