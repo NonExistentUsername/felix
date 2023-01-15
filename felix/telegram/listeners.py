@@ -37,4 +37,6 @@ class EngineUpdatesListener(IObserver):
             if chat_instance is None:
                 return
 
-            tbot.send_message(chat_instance.chat_id, txt("ua", "pet_created"))
+            tbot.send_message(
+                chat_instance.chat_id, txt(chat_instance.language_code, "pet_created")
+            )

@@ -71,7 +71,9 @@ class TelegramController(IController, IObserver):
         tg_chat: ITelegramChat = self.__get_or_create_chat(chat_id)
 
         if self.__pet_engine_component.get_pet(tg_chat.get_id()) is not None:
-            tbot.send_message(chat_id, txt("ua", "pet_already_created"))
+            tbot.send_message(
+                chat_id, txt(tg_chat.language_code, "pet_already_created")
+            )
             return
 
         self.__pet_engine_component.create_pet(tg_chat.get_id())
