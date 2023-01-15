@@ -2,6 +2,7 @@ import typing as t
 from sqlalchemy import Column, String, ForeignKey, BigInteger, Numeric, DECIMAL
 
 from core.tools.dependency_injector import IDependencyInjector
+from core.tools.observer import Observable
 from core.general.unique_object import IUniqueIDGenerator
 from core.database import Base
 from core.database import Base, database_session
@@ -85,7 +86,7 @@ class PetCustomizationFactory(IPetCustomizationFactory):
             return DBPetCustomization(instance)
 
 
-class PetCustomizationEngineComponent(IPetCustomizationEngineComponent):
+class PetCustomizationEngineComponent(IPetCustomizationEngineComponent, Observable):
     def __init__(self, pet_customization_factory: IPetCustomizationFactory) -> None:
         super().__init__()
         self.__pet_customization_factory = pet_customization_factory
