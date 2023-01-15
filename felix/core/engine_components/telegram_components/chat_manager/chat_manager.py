@@ -20,7 +20,7 @@ class DBTelegramChatModel(Base):
         autoincrement=False,
     )
     chat_id = Column(Numeric(40, 0), nullable=False)
-    language_code = Column(String(3))
+    language_code = Column(String(3), server_default="en")
 
 
 class DBTelegramChat(ITelegramChat, UniqueObjectMixin):
