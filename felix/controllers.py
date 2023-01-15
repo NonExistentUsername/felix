@@ -3,6 +3,10 @@ from core.engines import PetsEngine
 from telegram.controller import TelegramController
 import threading
 
+from core.database import init_database
+
+init_database()
+
 
 class TelegramPetsMainController(IController):
     def __init__(self) -> None:
