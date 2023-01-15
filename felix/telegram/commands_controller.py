@@ -77,4 +77,4 @@ class BotCommandsController:
             except Exception as e:
                 logger.exception(e)
         else:
-            logging.exception(ValueError("ignored"))
+            pass
