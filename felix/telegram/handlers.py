@@ -3,13 +3,14 @@ from . import tbot
 
 from core.tools import Observable
 from .events import BotCommandEvent
+from .messages import txt
 
 command_observable_component = Observable()
 
 
 @tbot.message_handler(commands=["start"])
 def send_start_message(message: types.Message) -> None:
-    tbot.reply_to(message, "Example")
+    tbot.reply_to(message, txt("ua", "start_message"))
 
 
 @tbot.message_handler(commands=["create_pet"])
