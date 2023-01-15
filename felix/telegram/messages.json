@@ -2,5 +2,9 @@
     "ua": {
         "pet_created": "Улюбленець створений 💫",
         "pet_already_created": "Улюбленця вже створили"
+    },
+    "en": {
+        "pet_created": "Pet created 💫",
+        "pet_already_created": "Pet already created"
     }
 }
