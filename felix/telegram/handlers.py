@@ -10,7 +10,9 @@ command_observable_component = Observable()
 
 @tbot.message_handler(commands=["start"])
 def send_start_message(message: types.Message) -> None:
-    tbot.reply_to(message, txt("ua", "start_message"))
+    command_observable_component.notify(
+        BotCommandEvent("start", chat_id=message.chat.id)
+    )
 
 
 @tbot.message_handler(commands=["create_pet"])
