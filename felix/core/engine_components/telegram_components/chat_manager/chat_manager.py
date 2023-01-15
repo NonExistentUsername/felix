@@ -20,6 +20,7 @@ class DBTelegramChatModel(Base):
         autoincrement=False,
     )
     chat_id = Column(Numeric(40, 0), nullable=False)
+    language_code = Column(String(3))
 
 
 class DBTelegramChat(ITelegramChat, UniqueObjectMixin):
@@ -30,6 +31,23 @@ class DBTelegramChat(ITelegramChat, UniqueObjectMixin):
     @property
     def chat_id(self) -> int:
         return int(self.__db_instance.chat_id)  # type: ignore
+
+    @property
+    def language_code(self) -> str:
+        return str(self.__db_instance.language_code)
+
+    @language_code.setter
+    def language_code(self, new_language_code: str) -> None:
+        if len(new_language_code) == "":
+            raise ValueError("Can't set empty language code")
+
+        if len(new_language_code) > 3:
+            raise ValueError("Can't set language code longer than 3 characters")
+
+        with database_session() as db:
+            self.__db_instance.language_code = new_language_code  # type: ignore
+            db.commit()
+            db.refresh(self.__db_instance)
 
 
 class TelegramChatManager(ITelegramChatManager, Observable):

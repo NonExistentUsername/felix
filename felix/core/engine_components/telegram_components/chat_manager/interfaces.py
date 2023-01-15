@@ -11,6 +11,16 @@ class ITelegramChat(IUniqueObject):
     def chat_id(self) -> int:
         pass
 
+    @property
+    @abstractmethod
+    def language_code(self) -> str:
+        pass
+
+    @language_code.setter
+    @abstractmethod
+    def language_code(self, new_language_code: str) -> None:
+        pass
+
 
 class ITelegramChatManager(IEngineComponent):
     @abstractmethod
