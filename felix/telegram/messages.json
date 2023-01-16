@@ -5,7 +5,8 @@
         "pet_already_created": "Улюбленця вже створили",
         "settings_menu": "Меню налаштувань",
         "language_settings": "Налаштування мови",
-        "set_language": "Встановіть мову"
+        "set_language": "Встановіть мову",
+        "language_set": "Мову встановлено"
     },
     "en": {
         "language_name": "English",
@@ -13,6 +14,7 @@
         "pet_already_created": "Pet already created",
         "settings_menu": "Settings menu",
         "language_settings": "Language settings",
-        "set_language": "Set language"
+        "set_language": "Set language",
+        "language_set": "Language set"
     }
 }

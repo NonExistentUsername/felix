@@ -53,6 +53,7 @@ class TelegramController(IController, IObserver):
         self.__command_event_to_method = {
             "create_pet": self.__create_pet,
             "settings": self.__settings,
+            "set_language": self.__set_language,
         }
 
         self.__callback_event_to_method = {
@@ -150,6 +151,25 @@ class TelegramController(IController, IObserver):
             message_id,
             reply_markup=self.__language_settings_menu_markup(tg_chat),
         )
+
+    def __set_language(self, command_event: BotCommandEvent) -> None:
+        try:
+            chat_id: int = int(command_event.kwargs["chat_id"])
+        except Exception as e:
+            logger.exception(e)
+            return
+
+        try:
+            language_code: str = str(command_event.kwargs["language_code"])
+        except Exception as e:
+            logger.exception(e)
+            return
+
+        tg_chat: ITelegramChat = self.__get_or_create_chat(chat_id)
+
+        tg_chat.language_code = language_code
+
+        tbot.send_message(chat_id, txt(tg_chat.language_code, "language_set"))
 
     def notify(self, event: IEvent) -> None:
         if isinstance(event, BotCommandEvent):
