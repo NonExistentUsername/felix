@@ -31,7 +31,7 @@ class DBPetCustomizationModel(Base):
 class DBPetCustomization(IPetCustomization):
     def __init__(self, instance: DBPetCustomizationModel) -> None:
         super().__init__()
-        self.__instance = instance
+        self.__instance: DBPetCustomizationModel = instance
 
     def get_id(self) -> int:
         return int(self.__instance.id)  # type: ignore
@@ -43,6 +43,16 @@ class DBPetCustomization(IPetCustomization):
     @name.setter
     def name(self, new_name: str) -> None:
         with database_session() as db:
+            instance: t.Optional[DBPetCustomizationModel] = (
+                db.query(DBPetCustomizationModel)
+                .filter(DBPetCustomizationModel.id == self.__instance.id)
+                .first()
+            )
+
+            if instance is None:
+                return
+
+            self.__instance = instance
             self.__instance.name = new_name  # type: ignore
             db.commit()
             db.refresh(self.__instance)
