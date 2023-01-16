@@ -51,14 +51,14 @@ class TelegramController(IController, IObserver):
         command_observable_component.add_observer(self)
 
         self.__command_event_to_method = {
-            "create_pet": self.__create_pet,
-            "settings": self.__settings,
-            "set_language": self.__set_language,
+            "create_pet": self.__create_pet_command,
+            "open_settings": self.__open_settings_command,
+            "set_language": self.__set_language_command,
         }
 
         self.__callback_event_to_method = {
-            "open_language_settings": self.__open_language_settings,
-            "open_settings": self.__open_settings,
+            "open_language_settings": self.__open_language_settings_callback,
+            "open_settings": self.__open_settings_callback,
         }
 
     def __get_or_create_chat(self, chat_id: int) -> ITelegramChat:
@@ -71,7 +71,7 @@ class TelegramController(IController, IObserver):
 
         return self.__telegram_chat_manager.create_chat(chat_id)
 
-    def __create_pet(self, command_event: BotCommandEvent) -> None:
+    def __create_pet_command(self, command_event: BotCommandEvent) -> None:
         try:
             chat_id: int = int(command_event.kwargs["chat_id"])
         except Exception as e:
@@ -122,7 +122,7 @@ class TelegramController(IController, IObserver):
 
         return language_menu
 
-    def __settings(self, command_event: BotCommandEvent) -> None:
+    def __open_settings_command(self, command_event: BotCommandEvent) -> None:
         try:
             chat_id: int = int(command_event.kwargs["chat_id"])
         except Exception as e:
@@ -137,7 +137,7 @@ class TelegramController(IController, IObserver):
             reply_markup=self.__settings_menu_markup(tg_chat),
         )
 
-    def __open_settings(self, callback_event: BotCallbackEvent) -> None:
+    def __open_settings_callback(self, callback_event: BotCallbackEvent) -> None:
         try:
             chat_id: int = int(callback_event.kwargs["chat_id"])
         except Exception as e:
@@ -159,7 +159,9 @@ class TelegramController(IController, IObserver):
             reply_markup=self.__settings_menu_markup(tg_chat),
         )
 
-    def __open_language_settings(self, callback_event: BotCallbackEvent) -> None:
+    def __open_language_settings_callback(
+        self, callback_event: BotCallbackEvent
+    ) -> None:
         try:
             chat_id: int = int(callback_event.kwargs["chat_id"])
         except Exception as e:
@@ -181,7 +183,7 @@ class TelegramController(IController, IObserver):
             reply_markup=self.__language_settings_menu_markup(tg_chat),
         )
 
-    def __set_language(self, command_event: BotCommandEvent) -> None:
+    def __set_language_command(self, command_event: BotCommandEvent) -> None:
         try:
             chat_id: int = int(command_event.kwargs["chat_id"])
         except Exception as e:

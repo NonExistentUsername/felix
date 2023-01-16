@@ -25,7 +25,7 @@ def create_pet_command(message: types.Message) -> None:
 @tbot.message_handler(commands=["settings"])
 def settings_command(message: types.Message) -> None:
     command_observable_component.notify(
-        BotCommandEvent("settings", chat_id=message.chat.id)
+        BotCommandEvent("open_settings", chat_id=message.chat.id)
     )
 
 
@@ -33,7 +33,7 @@ def settings_command(message: types.Message) -> None:
 def open_language_settings_callback(call: types.CallbackQuery):
     command_observable_component.notify(
         BotCallbackEvent(
-            "open_language_settings",
+            call.data,
             chat_id=call.message.chat.id,
             message_id=call.message.id,
         )
