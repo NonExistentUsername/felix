@@ -15,6 +15,9 @@ from core.engine_components.telegram_components.chat_manager import (
     ITelegramChatManager,
     ITelegramChat,
 )
+from core.engine_components.pet_customization_component import (
+    IPetCustomizationEngineComponent,
+)
 from .messages import txt, _MESSAGES
 
 
@@ -43,6 +46,17 @@ class TelegramController(IController, IObserver):
             raise ValueError("Can't get engine component for pets")
 
         self.__pet_engine_component: IPetEngineComponent = pet_engine_component
+
+        pet_customization_component: t.Optional[
+            IPetCustomizationEngineComponent
+        ] = engine_di_container.get_singleton(IPetCustomizationEngineComponent)
+
+        if pet_customization_component is None:
+            raise ValueError("Can't get engine component for pets customization")
+
+        self.__pet_customization_component: IPetCustomizationEngineComponent = (
+            pet_customization_component
+        )
 
         self.__pet_engine_component.add_observer(
             EngineUpdatesListener(engine_di_container)
