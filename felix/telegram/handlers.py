@@ -2,7 +2,7 @@ from telebot import types
 from . import tbot
 
 from core.tools import Observable
-from .events import BotCommandEvent
+from .events import BotCommandEvent, BotCallbackEvent
 from .messages import txt
 
 command_observable_component = Observable()
@@ -26,6 +26,17 @@ def create_pet_command(message: types.Message) -> None:
 def settings_command(message: types.Message) -> None:
     command_observable_component.notify(
         BotCommandEvent("settings", chat_id=message.chat.id)
+    )
+
+
+@tbot.callback_query_handler(func=lambda call: call.data == "open_language_settings")
+def open_language_settings_callback(call: types.CallbackQuery):
+    command_observable_component.notify(
+        BotCallbackEvent(
+            "open_language_settings",
+            chat_id=call.message.chat.id,
+            message_id=call.message.id,
+        )
     )
 
 

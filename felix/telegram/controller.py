@@ -89,7 +89,7 @@ class TelegramController(IController, IObserver):
         settings_menu.add(
             tgt.InlineKeyboardButton(
                 txt(tg_chat.language_code, "language_settings"),
-                callback_data="language_settings",
+                callback_data="open_language_settings",
             )
         )
 
