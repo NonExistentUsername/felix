@@ -1,7 +1,7 @@
 import os
 import json
 
-_MESSAGES = json.load(open("/usr/src/app/telegram/messages.json"))
+_MESSAGES: dict = json.load(open("/usr/src/app/telegram/messages.json"))
 
 
 def txt(country_code: str, text_key: str) -> str:

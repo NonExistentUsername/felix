@@ -7,7 +7,7 @@ from controller import IController
 from core.tools import IDependencyInjector, IObserver, IEvent
 from .handlers import command_observable_component
 from .bot import tbot
-from .events import BotCommandEvent
+from .events import BotCommandEvent, BotCallbackEvent
 from .listeners import EngineUpdatesListener
 
 from core.engine_components.pet_component import IPetEngineComponent
@@ -15,7 +15,7 @@ from core.engine_components.telegram_components.chat_manager import (
     ITelegramChatManager,
     ITelegramChat,
 )
-from .messages import txt
+from .messages import txt, _MESSAGES
 
 
 DEBUG = os.getenv("DEBUG") == "True"
@@ -53,6 +53,10 @@ class TelegramController(IController, IObserver):
         self.__command_event_to_method = {
             "create_pet": self.__create_pet,
             "settings": self.__settings,
+        }
+
+        self.__callback_event_to_method = {
+            "open_language_settings": self.__open_language_settings,
         }
 
     def __get_or_create_chat(self, chat_id: int) -> ITelegramChat:
@@ -95,6 +99,21 @@ class TelegramController(IController, IObserver):
 
         return settings_menu
 
+    def __language_settings_menu_markup(
+        self, tg_chat: ITelegramChat
+    ) -> tgt.InlineKeyboardMarkup:
+        language_menu = tgt.InlineKeyboardMarkup()
+        buttons = [
+            tgt.InlineKeyboardButton(
+                txt(language_code, "language_name"),
+                callback_data=f"set_language_{language_code}",
+            )
+            for language_code in _MESSAGES.keys()
+        ]
+        language_menu.add(*buttons)
+
+        return language_menu
+
     def __settings(self, command_event: BotCommandEvent) -> None:
         try:
             chat_id: int = int(command_event.kwargs["chat_id"])
@@ -110,11 +129,42 @@ class TelegramController(IController, IObserver):
             reply_markup=self.__settings_menu_markup(tg_chat),
         )
 
+    def __open_language_settings(self, callback_event: BotCallbackEvent) -> None:
+        try:
+            chat_id: int = int(callback_event.kwargs["chat_id"])
+        except Exception as e:
+            logger.exception(e)
+            return
+
+        try:
+            message_id: int = int(callback_event.kwargs["message_id"])
+        except Exception as e:
+            logger.exception(e)
+            return
+
+        tg_chat: ITelegramChat = self.__get_or_create_chat(chat_id)
+
+        tbot.edit_message_text(
+            txt(tg_chat.language_code, "set_language"),
+            chat_id,
+            message_id,
+            reply_markup=self.__language_settings_menu_markup(tg_chat),
+        )
+
     def notify(self, event: IEvent) -> None:
         if isinstance(event, BotCommandEvent):
             if event.command in self.__command_event_to_method:
                 try:
                     self.__command_event_to_method[event.command](event)
+                except Exception as e:
+                    logger.exception(e)
+            else:
+                pass
+
+        if isinstance(event, BotCallbackEvent):
+            if event.callback_data in self.__callback_event_to_method:
+                try:
+                    self.__callback_event_to_method[event.callback_data](event)
                 except Exception as e:
                     logger.exception(e)
             else:

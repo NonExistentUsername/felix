@@ -1,14 +1,18 @@
 {
     "ua": {
+        "language_name": "Українська",
         "pet_created": "Улюбленець створений 💫",
         "pet_already_created": "Улюбленця вже створили",
-        "settings_menu": "Меню налаштувань:",
-        "language_settings": "Налаштування мови"
+        "settings_menu": "Меню налаштувань",
+        "language_settings": "Налаштування мови",
+        "set_language": "Встановіть мову"
     },
     "en": {
+        "language_name": "English",
         "pet_created": "Pet created 💫",
         "pet_already_created": "Pet already created",
-        "settings_menu": "Settings menu:",
-        "language_settings": "Language settings"
+        "settings_menu": "Settings menu",
+        "language_settings": "Language settings",
+        "set_language": "Set language"
     }
 }
