@@ -2,13 +2,13 @@
     "ua": {
         "pet_created": "Улюбленець створений 💫",
         "pet_already_created": "Улюбленця вже створили",
-        "settings_menu_opened": "Відкрито меню налаштувань:",
-        "open_language_settings": "Відкрити налаштування мови"
+        "settings_menu": "Меню налаштувань:",
+        "language_settings": "Налаштування мови"
     },
     "en": {
         "pet_created": "Pet created 💫",
         "pet_already_created": "Pet already created",
-        "settings_menu_opened": "Settings menu opened:",
-        "open_language_settings": "Open language settings"
+        "settings_menu": "Settings menu:",
+        "language_settings": "Language settings"
     }
 }

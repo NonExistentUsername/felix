@@ -88,8 +88,8 @@ class TelegramController(IController, IObserver):
         settings_menu = tgt.InlineKeyboardMarkup()
         settings_menu.add(
             tgt.InlineKeyboardButton(
-                txt(tg_chat.language_code, "open_language_settings"),
-                callback_data="open_language_settings",
+                txt(tg_chat.language_code, "language_settings"),
+                callback_data="language_settings",
             )
         )
 
@@ -106,7 +106,7 @@ class TelegramController(IController, IObserver):
 
         tbot.send_message(
             chat_id,
-            txt(tg_chat.language_code, "settings_menu_opened"),
+            txt(tg_chat.language_code, "settings_menu"),
             reply_markup=self.__settings_menu_markup(tg_chat),
         )
 
