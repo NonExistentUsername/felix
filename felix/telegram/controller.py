@@ -1,6 +1,7 @@
 import typing as t
 import os
 import logging
+from telebot import types as tgt
 
 from controller import IController
 from core.tools import IDependencyInjector, IObserver, IEvent
@@ -49,7 +50,10 @@ class TelegramController(IController, IObserver):
 
         command_observable_component.add_observer(self)
 
-        self.__command_event_to_method = {"create_pet": self.__create_pet}
+        self.__command_event_to_method = {
+            "create_pet": self.__create_pet,
+            "settings": self.__settings,
+        }
 
     def __get_or_create_chat(self, chat_id: int) -> ITelegramChat:
         chat_instance: t.Optional[
@@ -77,6 +81,34 @@ class TelegramController(IController, IObserver):
             return
 
         self.__pet_engine_component.create_pet(tg_chat.get_id())
+
+    def __settings_menu_markup(
+        self, tg_chat: ITelegramChat
+    ) -> tgt.InlineKeyboardMarkup:
+        settings_menu = tgt.InlineKeyboardMarkup()
+        settings_menu.add(
+            tgt.InlineKeyboardButton(
+                txt(tg_chat.language_code, "open_language_settings"),
+                callback_data="open_language_settings",
+            )
+        )
+
+        return settings_menu
+
+    def __settings(self, command_event: BotCommandEvent) -> None:
+        try:
+            chat_id: int = int(command_event.kwargs["chat_id"])
+        except Exception as e:
+            logger.exception(e)
+            return
+
+        tg_chat: ITelegramChat = self.__get_or_create_chat(chat_id)
+
+        tbot.send_message(
+            chat_id,
+            txt(tg_chat.language_code, "settings_menu_opened"),
+            reply_markup=self.__settings_menu_markup(tg_chat),
+        )
 
     def notify(self, event: IEvent) -> None:
         if isinstance(event, BotCommandEvent):

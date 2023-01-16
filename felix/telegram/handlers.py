@@ -22,6 +22,13 @@ def create_pet_command(message: types.Message) -> None:
     )
 
 
+@tbot.message_handler(commands=["settings"])
+def settings_command(message: types.Message) -> None:
+    command_observable_component.notify(
+        BotCommandEvent("settings", chat_id=message.chat.id)
+    )
+
+
 @tbot.message_handler(commands=["set_pet_name"])
 def set_pet_name_command(message: types.Message) -> None:
     command_observable_component.notify(
