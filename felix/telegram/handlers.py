@@ -49,6 +49,17 @@ def set_language_callback(call: types.CallbackQuery):
     )
 
 
+@tbot.callback_query_handler(func=lambda call: call.data[:13] == "open_settings")
+def open_settings_callback(call: types.CallbackQuery):
+    command_observable_component.notify(
+        BotCallbackEvent(
+            call.data,
+            chat_id=call.message.chat.id,
+            message_id=call.message.id,
+        )
+    )
+
+
 @tbot.message_handler(commands=["set_pet_name"])
 def set_pet_name_command(message: types.Message) -> None:
     command_observable_component.notify(

@@ -58,6 +58,7 @@ class TelegramController(IController, IObserver):
 
         self.__callback_event_to_method = {
             "open_language_settings": self.__open_language_settings,
+            "open_settings": self.__open_settings,
         }
 
     def __get_or_create_chat(self, chat_id: int) -> ITelegramChat:
@@ -103,7 +104,7 @@ class TelegramController(IController, IObserver):
     def __language_settings_menu_markup(
         self, tg_chat: ITelegramChat
     ) -> tgt.InlineKeyboardMarkup:
-        language_menu = tgt.InlineKeyboardMarkup()
+        language_menu = tgt.InlineKeyboardMarkup(row_width=1)
         buttons = [
             tgt.InlineKeyboardButton(
                 txt(language_code, "language_name"),
@@ -111,6 +112,12 @@ class TelegramController(IController, IObserver):
             )
             for language_code in _MESSAGES.keys()
         ]
+        buttons.append(
+            tgt.InlineKeyboardButton(
+                "<< " + txt(tg_chat.language_code, "back"),
+                callback_data=f"open_settings",
+            )
+        )
         language_menu.add(*buttons)
 
         return language_menu
@@ -127,6 +134,28 @@ class TelegramController(IController, IObserver):
         tbot.send_message(
             chat_id,
             txt(tg_chat.language_code, "settings_menu"),
+            reply_markup=self.__settings_menu_markup(tg_chat),
+        )
+
+    def __open_settings(self, callback_event: BotCallbackEvent) -> None:
+        try:
+            chat_id: int = int(callback_event.kwargs["chat_id"])
+        except Exception as e:
+            logger.exception(e)
+            return
+
+        try:
+            message_id: int = int(callback_event.kwargs["message_id"])
+        except Exception as e:
+            logger.exception(e)
+            return
+
+        tg_chat: ITelegramChat = self.__get_or_create_chat(chat_id)
+
+        tbot.edit_message_text(
+            txt(tg_chat.language_code, "settings_menu"),
+            chat_id,
+            message_id,
             reply_markup=self.__settings_menu_markup(tg_chat),
         )
 
