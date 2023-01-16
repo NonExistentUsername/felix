@@ -42,6 +42,12 @@ class DBPetCustomization(IPetCustomization):
 
     @name.setter
     def name(self, new_name: str) -> None:
+        if len(new_name) == 0:
+            raise ValueError("Can't set empty pet name")
+
+        if len(new_name) > 63:
+            raise ValueError("Pet name cannot be longer than 63 characters")
+
         with database_session() as db:
             instance: t.Optional[DBPetCustomizationModel] = (
                 db.query(DBPetCustomizationModel)
