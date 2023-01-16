@@ -26,7 +26,7 @@ class DBTelegramChatModel(Base):
 class DBTelegramChat(ITelegramChat, UniqueObjectMixin):
     def __init__(self, instance: DBTelegramChatModel) -> None:
         super().__init__(id=int(instance.id))  # type: ignore
-        self.__db_instance = instance
+        self.__db_instance: DBTelegramChatModel = instance
 
     @property
     def chat_id(self) -> int:
@@ -45,7 +45,12 @@ class DBTelegramChat(ITelegramChat, UniqueObjectMixin):
             raise ValueError("Can't set language code longer than 3 characters")
 
         with database_session() as db:
-            self.__db_instance.language_code = new_language_code  # type: ignore
+            db_instance: t.Optional[DBTelegramChatModel] = db.query(DBTelegramChatModel).filter(DBTelegramChatModel.id == self.__db_instance.id).first()  # type: ignore
+            if db_instance is None:
+                return
+
+            self.__db_instance = db_instance
+            self.__db_instance.language_code = new_language_code
             db.commit()
             db.refresh(self.__db_instance)
 
