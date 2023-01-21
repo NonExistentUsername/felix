@@ -1,7 +1,10 @@
 import os
 import json
+import typing as t
 
-_MESSAGES: dict = json.load(open("/usr/src/app/telegram/messages.json"))
+_MESSAGES: t.Dict[str, t.Dict[str, str]] = json.load(
+    open("/usr/src/app/telegram/messages.json")
+)
 
 
 def txt(country_code: str, text_key: str) -> str:
@@ -14,3 +17,7 @@ def txt(country_code: str, text_key: str) -> str:
         return unknown
 
     return _MESSAGES[country_code][text_key]
+
+
+def get_list_of_languages() -> t.List[str]:
+    return list(_MESSAGES.keys())
