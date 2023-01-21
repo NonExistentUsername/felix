@@ -53,18 +53,21 @@ class PetsController(IObserver):
 
         return self.__telegram_chat_manager.create_chat(chat_id)
 
+    def __create_pet_command(self, event: BotCommandEvent) -> None:
+        chat_instance: ITelegramChat = self.__get_or_create_chat(event.chat_id)
+
+        if self.__pet_engine_component.get_pet(chat_instance.get_id()) is not None:
+            tbot.send_message(
+                event.chat_id,
+                txt(chat_instance.language_code, "pet_already_created"),
+            )
+            return
+
+        self.__pet_engine_component.create_pet(chat_instance.get_id())
+
     def notify(self, event: IEvent) -> None:
         if not isinstance(event, BotCommandEvent):
             return
 
         if event.command == "create_pet":
-            chat_instance: ITelegramChat = self.__get_or_create_chat(event.chat_id)
-
-            if self.__pet_engine_component.get_pet(chat_instance.get_id()) is not None:
-                tbot.send_message(
-                    event.chat_id,
-                    txt(chat_instance.language_code, "pet_already_created"),
-                )
-                return
-
-            self.__pet_engine_component.create_pet(chat_instance.get_id())
+            self.__create_pet_command(event)
