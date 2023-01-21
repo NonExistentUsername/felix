@@ -54,9 +54,9 @@ class PetsEngine(EngineRunMixin, IEngine):
             IPetCustomizationEngineComponent, self.__pet_customization_component
         )
         self.__di_conrainer.register_singleton(
-            ITelegramChatManager, self.__create_logger()
+            ITelegramChatManager, TelegramChatManager(self.__di_conrainer)
         )
-        self.__di_conrainer.register_singleton(logging.Logger, logging.Logger(""))
+        self.__di_conrainer.register_singleton(logging.Logger, self.__create_logger())
 
     def update_state(self, time_delta: float) -> None:
         self.__pet_component.update_state(time_delta)
