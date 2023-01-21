@@ -19,5 +19,5 @@ def txt(country_code: str, text_key: str) -> str:
     return _MESSAGES[country_code][text_key]
 
 
-def get_list_of_languages() -> t.List[str]:
-    return list(_MESSAGES.keys())
+def get_list_of_languages() -> t.Iterable[str]:
+    return _MESSAGES.keys()
