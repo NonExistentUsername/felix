@@ -3,6 +3,7 @@ import typing as t
 from core.tools import IDependencyInjector, IObserver
 from telegram.handlers.start import command_observable_component
 from telegram import tbot, BotCommandEvent
+from core.tools.observer import IEvent
 
 from core.engine_components.pet_component import IPetEngineComponent
 from core.engine_components.telegram_components.chat_manager import (
@@ -37,7 +38,10 @@ class StartController(IObserver):
 
         return self.__telegram_chat_manager.create_chat(chat_id)
 
-    def notify(self, event: BotCommandEvent) -> None:
+    def notify(self, event: IEvent) -> None:
+        if not isinstance(event, BotCommandEvent):
+            return
+
         if event.command == "start":
             chat_instance: ITelegramChat = self.__get_or_create_chat(event.chat_id)
 
