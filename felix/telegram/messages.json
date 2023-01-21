@@ -1,6 +1,7 @@
 {
     "ua": {
         "language_name": "Українська",
+        "start_message": "Ласкаво просимо до бота Фелікса!\nЗа допомогою цього бота ви можете створювати цифрових улюбленців!",
         "pet_created": "Улюбленець створений 💫",
         "pet_already_created": "Улюбленця вже створили",
         "settings_menu": "Меню налаштувань",
@@ -11,6 +12,7 @@
     },
     "en": {
         "language_name": "English",
+        "start_message": "Welcome to Felix the bot!\nWith this bot, you can create digital pets!",
         "pet_created": "Pet created 💫",
         "pet_already_created": "Pet already created",
         "settings_menu": "Settings menu",
