@@ -53,7 +53,10 @@ class PetsController(IObserver):
 
         return self.__telegram_chat_manager.create_chat(chat_id)
 
-    def notify(self, event: BotCommandEvent) -> None:
+    def notify(self, event: IEvent) -> None:
+        if not isinstance(event, BotCommandEvent):
+            return
+
         if event.command == "create_pet":
             chat_instance: ITelegramChat = self.__get_or_create_chat(event.chat_id)
 
