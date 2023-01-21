@@ -1,3 +1,6 @@
+import os
+import logging
+
 from .general.engine import IEngine, EngineRunMixin
 from .general.unique_object import UUID1, IUniqueIDGenerator
 from .tools.dependency_injector import IDependencyInjector, DependencyInjector
@@ -19,6 +22,18 @@ from .engine_components.telegram_components.chat_manager import (
 
 
 class PetsEngine(EngineRunMixin, IEngine):
+    def __create_logger(self) -> logging.Logger:
+        logger = logging.Logger("PetsLogging")
+
+        DEBUG = os.getenv("DEBUG") == "True"
+
+        if DEBUG:
+            logger.setLevel(logging.DEBUG)
+        else:
+            logger.setLevel(logging.INFO)
+
+        return logger
+
     def __init__(self) -> None:
         super().__init__(tickrate=20)
 
@@ -39,8 +54,9 @@ class PetsEngine(EngineRunMixin, IEngine):
             IPetCustomizationEngineComponent, self.__pet_customization_component
         )
         self.__di_conrainer.register_singleton(
-            ITelegramChatManager, TelegramChatManager(self.__di_conrainer)
+            ITelegramChatManager, self.__create_logger()
         )
+        self.__di_conrainer.register_singleton(logging.Logger, logging.Logger(""))
 
     def update_state(self, time_delta: float) -> None:
         self.__pet_component.update_state(time_delta)
