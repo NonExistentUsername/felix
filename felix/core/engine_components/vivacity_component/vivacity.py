@@ -3,6 +3,7 @@ import typing as t
 from core.database import Base, database_session
 from core.general.unique_object import IUniqueIDGenerator
 from core.tools.dependency_injector import IDependencyInjector
+from core.tools.observer import Observable
 from sqlalchemy import DECIMAL, BigInteger, Column, Float, ForeignKey, Numeric, String
 
 from .interfaces import IVivacity, IVivacityEngineComponent, IVivacityFactory
@@ -111,7 +112,7 @@ class VivacityFactory(IVivacityFactory):
             return DBVivacity(chat_instance)
 
 
-class HungerEngineComponent(IVivacityEngineComponent):
+class HungerEngineComponent(IVivacityEngineComponent, Observable):
     def __init__(self, hunger_factory: IVivacityFactory) -> None:
         super().__init__()
         self.__hunger_factory = hunger_factory
