@@ -25,6 +25,6 @@
         "language_set": "Language set",
         "pet_set_name_tutorial": "To set a pet's name, enter the following command:\n\n/set_pet_name [New name]",
         "create_pet_first": "First, create a pet",
-        "pets_name_changed": "Pet name changed to {new_name}"
+        "pets_name_changed": "Pet's name changed to {new_name}"
     }
 }
