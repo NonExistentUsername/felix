@@ -1,15 +1,14 @@
 import typing as t
 
-from core.tools import IDependencyInjector, IObserver
-from telegram.handlers.start import command_observable_component
-from telegram import tbot, BotCommandEvent
-from core.tools.observer import IEvent
-
 from core.engine_components.pet_component import IPetEngineComponent
 from core.engine_components.telegram_components.chat_manager import (
-    ITelegramChatManager,
     ITelegramChat,
+    ITelegramChatManager,
 )
+from core.tools import IDependencyInjector, IObserver
+from core.tools.observer import IEvent
+from telegram import BotCommandEvent, tbot
+from telegram.handlers.start import command_observable_component
 from telegram.messages import txt
 
 

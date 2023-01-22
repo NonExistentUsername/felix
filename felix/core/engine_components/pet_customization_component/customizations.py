@@ -1,16 +1,16 @@
 import typing as t
-from sqlalchemy import Column, String, ForeignKey, BigInteger, Numeric, DECIMAL
 
-from core.tools.dependency_injector import IDependencyInjector
-from core.tools.observer import Observable
-from core.general.unique_object import IUniqueIDGenerator
-from core.database import Base
 from core.database import Base, database_session
+from core.general.unique_object import IUniqueIDGenerator
+from core.tools.dependency_injector import IDependencyInjector
+from core.tools.observer import IEvent, IObserver, Observable
+from sqlalchemy import DECIMAL, BigInteger, Column, ForeignKey, Numeric, String
 
+from .events import NameChanged
 from .interfaces import (
     IPetCustomization,
-    IPetCustomizationFactory,
     IPetCustomizationEngineComponent,
+    IPetCustomizationFactory,
 )
 
 
@@ -35,6 +35,9 @@ class DBPetCustomization(IPetCustomization):
 
     def get_id(self) -> int:
         return int(self.__instance.id)  # type: ignore
+
+    def get_owner_id(self) -> int:
+        return int(self.__instance.owner_id)  # type: ignore
 
     @property
     def name(self) -> str:
@@ -102,7 +105,33 @@ class PetCustomizationFactory(IPetCustomizationFactory):
             return DBPetCustomization(instance)
 
 
-class PetCustomizationEngineComponent(IPetCustomizationEngineComponent, Observable):
+class ObservableCustomization(IPetCustomization, Observable):
+    def __init__(
+        self,
+        customization_instance: IPetCustomization,
+    ) -> None:
+        super().__init__()
+        self.__customization_instance = customization_instance
+
+    def get_id(self) -> int:
+        return self.__customization_instance.get_id()
+
+    def get_owner_id(self) -> int:
+        return self.__customization_instance.get_owner_id()
+
+    @property
+    def name(self) -> str:
+        return self.__customization_instance.name
+
+    @name.setter
+    def name(self, new_name: str) -> None:
+        self.__customization_instance.name = new_name
+        self.notify(NameChanged(new_name, self))
+
+
+class PetCustomizationEngineComponent(
+    IPetCustomizationEngineComponent, Observable, IObserver
+):
     def __init__(self, pet_customization_factory: IPetCustomizationFactory) -> None:
         super().__init__()
         self.__pet_customization_factory = pet_customization_factory
@@ -114,6 +143,9 @@ class PetCustomizationEngineComponent(IPetCustomizationEngineComponent, Observab
 
         if instance is None:
             instance = self.__pet_customization_factory.create(pet_id)
+
+        instance = ObservableCustomization(instance)
+        instance.add_observer(self)
 
         return instance
 

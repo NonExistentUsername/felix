@@ -1,9 +1,9 @@
-from controller.interfaces import IController
-from core.engines import PetsEngine
-from telegram.controller import TelegramController
 import threading
 
+from controller.interfaces import IController
 from core.database import init_database
+from core.engines import PetsEngine
+from telegram.controller import TelegramController
 
 init_database()
 
