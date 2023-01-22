@@ -13,7 +13,8 @@
         "create_pet_first": "Спочатку створіть улюбленця",
         "pets_name_changed": "Ім'я улюбленця змінено на {new_name}",
         "templates.pet_name": "Ім'я: {name}",
-        "templates.pet_hunger": "Голод: {hunger}%"
+        "templates.pet_hunger": "Голод: {hunger}%",
+        "templates.pet_vivacity": "Бадьорість: {vivacity}%"
     },
     "en": {
         "language_name": "English",
@@ -29,6 +30,7 @@
         "create_pet_first": "First, create a pet",
         "pets_name_changed": "Pet's name changed to {new_name}",
         "templates.pet_name": "Name: {name}",
-        "templates.pet_hunger": "Hunger: {hunger}%"
+        "templates.pet_hunger": "Hunger: {hunger}%",
+        "templates.pet_vivacity": "Vivacity: {vivacity}%"
     }
 }
