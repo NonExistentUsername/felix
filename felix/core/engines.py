@@ -1,6 +1,11 @@
 import logging
 import os
 
+from .engine_components.hunger_component import (
+    HungerEngineComponent,
+    HungerFactory,
+    IHungerEngineComponent,
+)
 from .engine_components.pet_component import (
     ChickenPetFactory,
     DefaultDBPetFactory,
@@ -15,6 +20,11 @@ from .engine_components.pet_customization_component import (
 from .engine_components.telegram_components.chat_manager import (
     ITelegramChatManager,
     TelegramChatManager,
+)
+from .engine_components.vivacity_component import (
+    IVivacityEngineComponent,
+    VivacityEngineComponent,
+    VivacityFactory,
 )
 from .general.engine import EngineRunMixin, IEngine
 from .general.unique_object import UUID1, IUniqueIDGenerator
@@ -55,6 +65,14 @@ class PetsEngine(EngineRunMixin, IEngine):
         )
         self.__di_conrainer.register_singleton(
             ITelegramChatManager, TelegramChatManager(self.__di_conrainer)
+        )
+        self.__di_conrainer.register_singleton(
+            IHungerEngineComponent,
+            HungerEngineComponent(HungerFactory(self.__di_conrainer)),
+        )
+        self.__di_conrainer.register_singleton(
+            IVivacityEngineComponent,
+            VivacityEngineComponent(VivacityFactory(self.__di_conrainer)),
         )
         self.__di_conrainer.register_singleton(logging.Logger, self.__create_logger())
 
