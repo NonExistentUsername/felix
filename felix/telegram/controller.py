@@ -4,6 +4,7 @@ import typing as t
 
 from controller import IController
 from core.tools import IDependencyInjector
+from telebot import logger
 from telebot import types as tgt
 
 from .bot import tbot
@@ -22,6 +23,7 @@ class TelegramController(IController):
 
     def __init__(self, engine_di_container: IDependencyInjector) -> None:
         super().__init__()
+        engine_di_container.register_singleton(logging.Logger, logger)
 
         self.__init_controllers(engine_di_container)
         self.__init_listeners(engine_di_container)
