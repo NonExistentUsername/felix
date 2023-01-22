@@ -36,7 +36,7 @@ class DBHunger(IHunger):
 
     @property
     def value(self) -> float:
-        return self.__db_instance
+        return float(self.__db_instance.value)  # type: ignore
 
     @value.setter
     def value(self, new_value: float) -> None:
