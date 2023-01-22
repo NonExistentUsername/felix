@@ -135,3 +135,6 @@ class HungerEngineComponent(IVivacityEngineComponent):
         object_id: t.Optional[int] = None,
     ) -> t.Optional[IVivacity]:
         return self.__hunger_factory.get(owner_id, object_id)
+
+    def update_state(self, time_delta: float) -> None:
+        pass
