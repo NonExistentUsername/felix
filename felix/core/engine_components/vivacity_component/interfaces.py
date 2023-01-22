@@ -33,15 +33,15 @@ class IVivacityFactory(ABC):
 
 class IVivacityEngineComponent(IEngineComponent):
     @abstractmethod
-    def create_hunger(self, owner_id: int) -> IVivacity:
+    def create_vivacity(self, owner_id: int) -> IVivacity:
         pass
 
     @abstractmethod
-    def create_or_get_hunger(self, owner_id: int) -> IVivacity:
+    def create_or_get_vivacity(self, owner_id: int) -> IVivacity:
         pass
 
     @abstractmethod
-    def get_hunger(
+    def get_vivacity(
         self,
         owner_id: t.Optional[int] = None,
         object_id: t.Optional[int] = None,

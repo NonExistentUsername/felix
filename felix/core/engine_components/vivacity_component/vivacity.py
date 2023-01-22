@@ -112,30 +112,30 @@ class VivacityFactory(IVivacityFactory):
             return DBVivacity(chat_instance)
 
 
-class HungerEngineComponent(IVivacityEngineComponent, Observable):
-    def __init__(self, hunger_factory: IVivacityFactory) -> None:
+class VivacityEngineComponent(IVivacityEngineComponent, Observable):
+    def __init__(self, vivacity_factory: IVivacityFactory) -> None:
         super().__init__()
-        self.__hunger_factory = hunger_factory
+        self.__vivacity_factory = vivacity_factory
 
-    def create_hunger(self, owner_id: int) -> IVivacity:
-        return self.__hunger_factory.create(owner_id)
+    def create_vivacity(self, owner_id: int) -> IVivacity:
+        return self.__vivacity_factory.create(owner_id)
 
-    def create_or_get_hunger(self, owner_id: int) -> IVivacity:
-        hunger_instance: t.Optional[IVivacity] = self.get_hunger(owner_id=owner_id)
+    def create_or_get_vivacity(self, owner_id: int) -> IVivacity:
+        vivacity_instance: t.Optional[IVivacity] = self.get_vivacity(owner_id=owner_id)
 
-        if hunger_instance is not None:
-            return hunger_instance
+        if vivacity_instance is not None:
+            return vivacity_instance
 
-        hunger_instance = self.create_hunger(owner_id)
+        vivacity_instance = self.create_vivacity(owner_id)
 
-        return hunger_instance
+        return vivacity_instance
 
-    def get_hunger(
+    def get_vivacity(
         self,
         owner_id: t.Optional[int] = None,
         object_id: t.Optional[int] = None,
     ) -> t.Optional[IVivacity]:
-        return self.__hunger_factory.get(owner_id, object_id)
+        return self.__vivacity_factory.get(owner_id, object_id)
 
     def update_state(self, time_delta: float) -> None:
         pass
