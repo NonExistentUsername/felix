@@ -1,3 +1,4 @@
+import logging
 import typing as t
 from abc import ABC, abstractmethod
 
@@ -54,8 +55,11 @@ class PetsListener(IObserver):
         )
         self.__pet_customization_engine_component.add_observer(self)
 
+        self.__logger: t.Optional[logging.Logger] = engine_di_container.get_singleton(
+            logging.Logger
+        )
+
     def notify(self, event: IEvent) -> None:
-        print(event.__dict__)
         if isinstance(event, PetCreated):
             chat_instance: t.Optional[
                 ITelegramChat
