@@ -1,23 +1,21 @@
-import typing as t
-import os
 import logging
-from telebot import types as tgt
+import os
+import typing as t
 
 from controller import IController
-from core.tools import IDependencyInjector, IObserver, IEvent
-from telegram.handlers.settings import command_observable_component
-from telegram import tbot, BotCommandEvent, BotCallbackEvent
-
 from core.engine_components.pet_component import IPetEngineComponent
-from core.engine_components.telegram_components.chat_manager import (
-    ITelegramChatManager,
-    ITelegramChat,
-)
 from core.engine_components.pet_customization_component import (
     IPetCustomizationEngineComponent,
 )
-from telegram.messages import txt, get_list_of_languages
-from telegram import logger
+from core.engine_components.telegram_components.chat_manager import (
+    ITelegramChat,
+    ITelegramChatManager,
+)
+from core.tools import IDependencyInjector, IEvent, IObserver
+from telebot import types as tgt
+from telegram import BotCallbackEvent, BotCommandEvent, logger, tbot
+from telegram.handlers.settings import command_observable_component
+from telegram.messages import get_list_of_languages, txt
 
 
 class SettingsController(IObserver):

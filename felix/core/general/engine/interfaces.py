@@ -1,8 +1,8 @@
-from abc import ABC, abstractmethod
 import typing as t
+from abc import ABC, abstractmethod
 
-from core.tools.observer import IObservable
 from core.tools.dependency_injector import IDependencyInjector
+from core.tools.observer import IObservable
 
 
 class IEngineComponent(IObservable):

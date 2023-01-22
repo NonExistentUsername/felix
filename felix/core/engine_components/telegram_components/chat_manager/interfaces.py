@@ -1,6 +1,6 @@
 import typing as t
-
 from abc import ABC, abstractmethod
+
 from core.general.engine import IEngineComponent
 from core.general.unique_object import IUniqueObject
 

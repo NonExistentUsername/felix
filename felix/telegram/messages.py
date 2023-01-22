@@ -1,5 +1,5 @@
-import os
 import json
+import os
 import typing as t
 
 _MESSAGES: t.Dict[str, t.Dict[str, str]] = json.load(

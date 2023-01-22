@@ -1,2 +1,2 @@
-from .interfaces import ITelegramChatManager, ITelegramChat
 from .chat_manager import TelegramChatManager
+from .interfaces import ITelegramChat, ITelegramChatManager

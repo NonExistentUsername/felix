@@ -1,8 +1,6 @@
-from telegram import tbot
-from telegram import BotCommandEvent, BotCallbackEvent
-from telebot import types
-
 from core.tools import Observable
+from telebot import types
+from telegram import BotCallbackEvent, BotCommandEvent, tbot
 
 command_observable_component = Observable()
 

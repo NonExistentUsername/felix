@@ -1,4 +1,5 @@
-from general.engine import IEngineFactory, IEngine
+from general.engine import IEngine, IEngineFactory
+
 from .engines import PetsEngine
 
 

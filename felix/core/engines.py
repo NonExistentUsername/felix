@@ -1,24 +1,24 @@
-import os
 import logging
+import os
 
-from .general.engine import IEngine, EngineRunMixin
-from .general.unique_object import UUID1, IUniqueIDGenerator
-from .tools.dependency_injector import IDependencyInjector, DependencyInjector
 from .engine_components.pet_component import (
-    PetEngineComponent,
-    IPetEngineComponent,
     ChickenPetFactory,
     DefaultDBPetFactory,
+    IPetEngineComponent,
+    PetEngineComponent,
 )
 from .engine_components.pet_customization_component import (
     IPetCustomizationEngineComponent,
-    PetCustomizationFactory,
     PetCustomizationEngineComponent,
+    PetCustomizationFactory,
 )
 from .engine_components.telegram_components.chat_manager import (
-    TelegramChatManager,
     ITelegramChatManager,
+    TelegramChatManager,
 )
+from .general.engine import EngineRunMixin, IEngine
+from .general.unique_object import UUID1, IUniqueIDGenerator
+from .tools.dependency_injector import DependencyInjector, IDependencyInjector
 
 
 class PetsEngine(EngineRunMixin, IEngine):

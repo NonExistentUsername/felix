@@ -1,5 +1,6 @@
-import os
 import logging
+import os
+
 from telebot import TeleBot, logger
 
 TG_BOT_TOKEN = str(os.getenv("TG_BOT_TOKEN"))
