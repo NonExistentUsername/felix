@@ -86,5 +86,7 @@ class PetsListener(IObserver):
 
             tbot.send_message(
                 chat_instance.chat_id,
-                txt(chat_instance.language_code, "pets_name_changed"),
+                txt(chat_instance.language_code, "pets_name_changed").format(
+                    new_name=event.new_name
+                ),
             )

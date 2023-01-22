@@ -8,7 +8,10 @@
         "back": "Назад",
         "language_settings": "Налаштування мови",
         "set_language": "Встановіть мову",
-        "language_set": "Мову встановлено"
+        "language_set": "Мову встановлено",
+        "pet_set_name_tutorial": "Для встановлення ім'я улюбленція потрібно ввести наступну команду:\n\n/set_pet_name [Нове ім'я]",
+        "create_pet_first": "Спочатку створіть улюбленця",
+        "pets_name_changed": "Ім'я улюбленця змінено на {new_name}"
     },
     "en": {
         "language_name": "English",
@@ -19,6 +22,9 @@
         "back": "Back",
         "language_settings": "Language settings",
         "set_language": "Set language",
-        "language_set": "Language set"
+        "language_set": "Language set",
+        "pet_set_name_tutorial": "To set a pet's name, enter the following command:\n\n/set_pet_name [New name]",
+        "create_pet_first": "First, create a pet",
+        "pets_name_changed": "Pet name changed to {new_name}"
     }
 }
