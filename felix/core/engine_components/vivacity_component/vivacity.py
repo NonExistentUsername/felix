@@ -20,7 +20,7 @@ class DBVivacityModel(Base):
         autoincrement=False,
     )
     owner_id = Column(Numeric(40, 0), nullable=False)
-    value = Column(Float, nullable=False, server_default=0)
+    value = Column(Float, nullable=False, server_default="0")
 
 
 class DBVivacity(IVivacity):
