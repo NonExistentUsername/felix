@@ -54,6 +54,10 @@ class PetsController(IObserver):
 
         command_observable_component.add_observer(self)
 
+        self.__logger: t.Optional[logging.Logger] = engine_di_container.get_singleton(
+            logging.Logger
+        )
+
     def __get_or_create_chat(self, chat_id: int) -> ITelegramChat:
         chat_instance: t.Optional[
             ITelegramChat
@@ -80,13 +84,19 @@ class PetsController(IObserver):
         try:
             new_name: str = event.kwargs["new_name"]
         except Exception as e:
+            if self.__logger:
+                self.__logger.exception(e)
             return
 
         chat_instance: ITelegramChat = self.__get_or_create_chat(event.chat_id)
 
         if len(new_name) == 0 or len(new_name) > 63:
             tbot.send_message(
-                event.chat_id, txt(chat_instance.language_code, "pet_set_name_tutorial")
+                event.chat_id,
+                txt(
+                    chat_instance.language_code,
+                    "pet_set_name_tutorial",
+                ),
             )
             return
 
