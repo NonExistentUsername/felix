@@ -16,13 +16,15 @@ def create_pet_command(message: types.Message) -> None:
     )
 
 
-@tbot.message_handler(commands=["set_pet_name"])
+@tbot.message_handler(
+    func=lambda message: str(message.text).startswith("/set_pet_name")
+)
 def set_pet_name_command(message: types.Message) -> None:
     command_observable_component.notify(
         BotCommandEvent(
             "set_pet_name",
             chat_id=message.chat.id,
-            new_name=str(message.text)[13:],
+            new_name=str(message.text)[14:],
             user_id=message.from_user.id,
         )
     )
