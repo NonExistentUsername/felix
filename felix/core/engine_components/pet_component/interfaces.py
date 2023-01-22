@@ -1,5 +1,6 @@
 import typing as t
 from abc import ABC, abstractmethod
+
 from core.general.engine import IEngineComponent
 from core.general.unique_object import ILinkedUniqueObject
 
@@ -17,7 +18,11 @@ class IPetFactory(ABC):
         pass
 
     @abstractmethod
-    def get(self, owner_id: int) -> IPet:
+    def get(
+        self,
+        owner_id: t.Optional[int] = None,
+        pet_id: t.Optional[int] = None,
+    ) -> t.Optional[IPet]:
         pass
 
 
@@ -27,5 +32,9 @@ class IPetEngineComponent(IEngineComponent):
         pass
 
     @abstractmethod
-    def get_pet(self, owner_id: int) -> t.Optional[IPet]:
+    def get_pet(
+        self,
+        owner_id: t.Optional[int] = None,
+        pet_id: t.Optional[int] = None,
+    ) -> t.Optional[IPet]:
         pass

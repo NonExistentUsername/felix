@@ -74,8 +74,9 @@ class PetsListener(IObserver):
                 chat_instance.chat_id, txt(chat_instance.language_code, "pet_created")
             )
         elif isinstance(event, PetsNameChanged):
+
             pet: t.Optional[IPet] = self.__pet_engine_component.get_pet(
-                event.pet_customization_instance.get_owner_id()
+                pet_id=event.pet_customization_instance.get_owner_id()
             )
 
             if not pet:

@@ -1,14 +1,12 @@
 import typing as t
-from sqlalchemy import Column, String, ForeignKey, BigInteger, Numeric, DECIMAL
 
-from .interfaces import IPet, IPetFactory, IPetEngineComponent
-from .events import PetCreated
-
-from core.database import Base
 from core.database import Base, database_session
+from core.general.unique_object import IUniqueIDGenerator, LinkedUniqueObjectMixin
+from core.tools import IDependencyInjector, Observable
+from sqlalchemy import DECIMAL, BigInteger, Column, ForeignKey, Numeric, String
 
-from core.general.unique_object import LinkedUniqueObjectMixin, IUniqueIDGenerator
-from core.tools import Observable, IDependencyInjector
+from .events import PetCreated
+from .interfaces import IPet, IPetEngineComponent, IPetFactory
 
 
 class DBPetModel(Base):
@@ -86,16 +84,27 @@ class DefaultDBPetFactory(DefaultPetFactoryBase):
 
             return DBPet(pet_instance)
 
-    def get(self, owner_id: int) -> t.Optional[IPet]:
-        with database_session() as db:
-            pet_instance = (
-                db.query(DBPetModel).filter(DBPetModel.owner_id == owner_id).first()
-            )
+    def get(
+        self,
+        owner_id: t.Optional[int] = None,
+        pet_id: t.Optional[int] = None,
+    ) -> t.Optional[IPet]:
 
-            if pet_instance is None:
+        with database_session() as db:
+            db_query = db.query(DBPetModel)
+
+            if owner_id:
+                db_query = db_query.filter(DBPetModel.owner_id == owner_id)
+
+            if pet_id:
+                db_query = db_query.filter(DBPetModel.id == pet_id)
+
+            chat_instance: t.Optional[DBPetModel] = db_query.first()
+
+            if chat_instance is None:
                 return None
 
-            return DBPet(pet_instance)
+            return DBPet(chat_instance)
 
 
 class ChickenPetFactory(DefaultPetFactory):
@@ -117,8 +126,12 @@ class PetEngineComponent(IPetEngineComponent, Observable):
 
         return pet_instance
 
-    def get_pet(self, owner_id: int) -> t.Optional[IPet]:
-        return self.__pet_factory.get(owner_id)
+    def get_pet(
+        self,
+        owner_id: t.Optional[int] = None,
+        pet_id: t.Optional[int] = None,
+    ) -> t.Optional[IPet]:
+        return self.__pet_factory.get(owner_id=owner_id, pet_id=pet_id)
 
     def update_state(self, time_delta: float) -> None:
         pass
