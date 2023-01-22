@@ -1,10 +1,10 @@
 import typing as t
-from sqlalchemy import Column, String, BigInteger, ForeignKey, Numeric
 
-from core.general.unique_object import UniqueObjectMixin, IUniqueIDGenerator
+from core.database import Base, database_session
+from core.general.unique_object import IUniqueIDGenerator, UniqueObjectMixin
 from core.tools.dependency_injector import IDependencyInjector
 from core.tools.observer import Observable
-from core.database import Base, database_session
+from sqlalchemy import BigInteger, Column, ForeignKey, Numeric, String
 
 from .interfaces import ITelegramChat, ITelegramChatManager
 
@@ -100,10 +100,12 @@ class TelegramChatManager(ITelegramChatManager, Observable):
             db_query = db.query(DBTelegramChatModel)
 
             if object_id:
-                db_query.filter(DBTelegramChatModel.id == object_id)
+                db_query = db_query.filter(DBTelegramChatModel.id == object_id)
 
             if telegram_chat_id:
-                db_query.filter(DBTelegramChatModel.chat_id == telegram_chat_id)
+                db_query = db_query.filter(
+                    DBTelegramChatModel.chat_id == telegram_chat_id
+                )
 
             chat_instance: t.Optional[DBTelegramChatModel] = db_query.first()
 
