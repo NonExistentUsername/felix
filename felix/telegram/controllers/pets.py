@@ -138,6 +138,18 @@ class PetsController(IObserver):
             name=pet_customization.name
         )
 
+    def __render_pets_info__hunger(self, language_code: str, pet: IPet) -> str:
+        if not self.__hunger_engine_component:
+            return "Unknown"
+
+        pet_hunger: t.Optional[
+            IHunger
+        ] = self.__hunger_engine_component.create_or_get_hunger(owner_id=pet.get_id())
+
+        return txt(language_code, "templates.pet_hunger").format(
+            hunger=pet_hunger.value
+        )
+
     def __render_pets_info(self, chat_instance: ITelegramChat) -> str:
         pet: t.Optional[IPet] = self.__pet_engine_component.get_pet(
             owner_id=chat_instance.get_id()
@@ -147,6 +159,11 @@ class PetsController(IObserver):
             return ""
 
         result: str = self.__render_pets_info__name(chat_instance.language_code, pet)
+
+        if self.__hunger_engine_component:
+            result += "\n" + self.__render_pets_info__hunger(
+                chat_instance.language_code, pet
+            )
 
         return result
 

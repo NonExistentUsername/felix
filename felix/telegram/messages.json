@@ -12,7 +12,8 @@
         "pet_set_name_tutorial": "Для встановлення ім'я улюбленція потрібно ввести наступну команду:\n\n/set_pet_name [Нове ім'я]",
         "create_pet_first": "Спочатку створіть улюбленця",
         "pets_name_changed": "Ім'я улюбленця змінено на {new_name}",
-        "templates.pet_name": "Ім'я: {name}"
+        "templates.pet_name": "Ім'я: {name}",
+        "templates.pet_hunger": "Голод: {hunger}%"
     },
     "en": {
         "language_name": "English",
@@ -27,6 +28,7 @@
         "pet_set_name_tutorial": "To set a pet's name, enter the following command:\n\n/set_pet_name [New name]",
         "create_pet_first": "First, create a pet",
         "pets_name_changed": "Pet's name changed to {new_name}",
-        "templates.pet_name": "Name: {name}"
+        "templates.pet_name": "Name: {name}",
+        "templates.pet_hunger": "Hunger: {hunger}%"
     }
 }
