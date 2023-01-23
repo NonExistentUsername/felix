@@ -14,7 +14,8 @@
         "pets_name_changed": "Ім'я улюбленця змінено на {new_name}",
         "templates.pet_name": "Ім'я: {name}",
         "templates.pet_hunger": "Голод: {hunger}%",
-        "templates.pet_vivacity": "Бадьорість: {vivacity}%"
+        "templates.pet_vivacity": "Бадьорість: {vivacity}%",
+        "templates.balance": "Баланс: {balance}"
     },
     "en": {
         "language_name": "English",
@@ -31,6 +32,7 @@
         "pets_name_changed": "Pet's name changed to {new_name}",
         "templates.pet_name": "Name: {name}",
         "templates.pet_hunger": "Hunger: {hunger}%",
-        "templates.pet_vivacity": "Vivacity: {vivacity}%"
+        "templates.pet_vivacity": "Vivacity: {vivacity}%",
+        "templates.balance": "Balance: {balance}"
     }
 }

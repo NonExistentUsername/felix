@@ -8,7 +8,12 @@ from telebot import logger
 from telebot import types as tgt
 
 from .bot import tbot
-from .controllers import PetsController, SettingsController, StartController
+from .controllers import (
+    EconomyController,
+    PetsController,
+    SettingsController,
+    StartController,
+)
 from .listeners import PetsListener
 
 
@@ -17,6 +22,7 @@ class TelegramController(IController):
         self.__start_controller = StartController(engine_di_container)
         self.__settings_controller = SettingsController(engine_di_container)
         self.__pets_controller = PetsController(engine_di_container)
+        self.__economy_controller = EconomyController(engine_di_container)
 
     def __init_listeners(self, engine_di_container: IDependencyInjector) -> None:
         self.__pets_listener = PetsListener(engine_di_container)
