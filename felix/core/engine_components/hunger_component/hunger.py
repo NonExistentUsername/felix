@@ -67,6 +67,9 @@ class HungerFactory(IHungerFactory):
         self.__id_generator: IUniqueIDGenerator = id_generator
 
     def create(self, owner_id: int) -> IHunger:
+        if self.get(owner_id=owner_id):
+            raise ValueError("Hunger already created")
+
         with database_session() as db:
             hunger_instance: t.Optional[DBHungerModel] = (
                 db.query(DBHungerModel)

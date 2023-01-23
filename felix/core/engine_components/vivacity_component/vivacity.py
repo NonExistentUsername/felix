@@ -67,6 +67,9 @@ class VivacityFactory(IVivacityFactory):
         self.__id_generator: IUniqueIDGenerator = id_generator
 
     def create(self, owner_id: int) -> IVivacity:
+        if self.get(owner_id=owner_id):
+            raise ValueError("Vivacity already created")
+
         with database_session() as db:
             hunger_instance: t.Optional[DBVivacityModel] = (
                 db.query(DBVivacityModel)
