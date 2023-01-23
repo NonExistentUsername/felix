@@ -24,6 +24,7 @@ from .engine_components.telegram_components.chat_manager import (
 )
 from .engine_components.vivacity_component import (
     IVivacityEngineComponent,
+    PetVivacityAutoCreation,
     VivacityEngineComponent,
     VivacityFactory,
 )
@@ -76,9 +77,16 @@ class PetsEngine(EngineRunMixin, IEngine):
         )
         pet_hunger_auto_creation = PetHungerAutoCreation(self.__hunger_engine_component)
         self.__pet_component.add_observer(pet_hunger_auto_creation)
+        self.__vivacity_engine_component = VivacityEngineComponent(
+            VivacityFactory(self.__di_conrainer)
+        )
+        vivacity_engine_component = PetVivacityAutoCreation(
+            self.__vivacity_engine_component
+        )
+        self.__pet_component.add_observer(vivacity_engine_component)
         self.__di_conrainer.register_singleton(
             IVivacityEngineComponent,
-            VivacityEngineComponent(VivacityFactory(self.__di_conrainer)),
+            self.__vivacity_engine_component,
         )
         self.__di_conrainer.register_singleton(logging.Logger, self.__create_logger())
 
