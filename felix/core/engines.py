@@ -1,6 +1,11 @@
 import logging
 import os
 
+from .engine_components.economy_component import (
+    BalanceFactory,
+    EconomyEngineComponent,
+    IEconomyEngineComponent,
+)
 from .engine_components.hunger_component import (
     HungerEngineComponent,
     HungerFactory,
@@ -87,6 +92,12 @@ class PetsEngine(EngineRunMixin, IEngine):
         self.__di_conrainer.register_singleton(
             IVivacityEngineComponent,
             self.__vivacity_engine_component,
+        )
+        self.__economy_engine_component: IEconomyEngineComponent = (
+            EconomyEngineComponent(BalanceFactory(self.__di_conrainer))
+        )
+        self.__di_conrainer.register_singleton(
+            IEconomyEngineComponent, self.__economy_engine_component
         )
         self.__di_conrainer.register_singleton(logging.Logger, self.__create_logger())
 
