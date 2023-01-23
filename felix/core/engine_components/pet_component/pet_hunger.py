@@ -1,7 +1,6 @@
+from core.engine_components.hunger_component.interfaces import IHungerEngineComponent
 from core.engine_components.pet_component import PetCreated
 from core.tools.observer import IEvent, IObserver
-
-from .interfaces import IHungerEngineComponent
 
 
 class PetHungerAutoCreation(IObserver):

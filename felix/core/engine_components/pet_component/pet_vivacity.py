@@ -1,7 +1,8 @@
 from core.engine_components.pet_component import PetCreated
+from core.engine_components.vivacity_component.interfaces import (
+    IVivacityEngineComponent,
+)
 from core.tools.observer import IEvent, IObserver
-
-from .interfaces import IVivacityEngineComponent
 
 
 class PetVivacityAutoCreation(IObserver):

@@ -1,10 +1,12 @@
-from .interfaces import IPet, IPetFactory, IPetEngineComponent
+from .events import PetCreated
+from .interfaces import IPet, IPetEngineComponent, IPetFactory
+from .pet_hunger import PetHungerAutoCreation
+from .pet_vivacity import PetVivacityAutoCreation
 from .pets import (
-    Pet,
-    PetEngineComponent,
     ChickenPetFactory,
-    DefaultPetFactoryBase,
     DefaultDBPetFactory,
     DefaultPetFactory,
+    DefaultPetFactoryBase,
+    Pet,
+    PetEngineComponent,
 )
-from .events import PetCreated

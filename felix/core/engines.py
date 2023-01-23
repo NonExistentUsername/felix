@@ -11,13 +11,14 @@ from .engine_components.hunger_component import (
     HungerEngineComponent,
     HungerFactory,
     IHungerEngineComponent,
-    PetHungerAutoCreation,
 )
 from .engine_components.pet_component import (
     ChickenPetFactory,
     DefaultDBPetFactory,
     IPetEngineComponent,
     PetEngineComponent,
+    PetHungerAutoCreation,
+    PetVivacityAutoCreation,
 )
 from .engine_components.pet_customization_component import (
     IPetCustomizationEngineComponent,
@@ -30,7 +31,6 @@ from .engine_components.telegram_components.chat_manager import (
 )
 from .engine_components.vivacity_component import (
     IVivacityEngineComponent,
-    PetVivacityAutoCreation,
     VivacityEngineComponent,
     VivacityFactory,
 )
