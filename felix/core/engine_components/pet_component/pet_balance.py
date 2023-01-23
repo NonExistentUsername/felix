@@ -1,7 +1,6 @@
+from core.engine_components.economy_component.interfaces import IEconomyEngineComponent
 from core.engine_components.pet_component import PetCreated
 from core.tools.observer import IEvent, IObserver
-
-from .interfaces import IEconomyEngineComponent
 
 
 class PetBalanceAutoCreation(IObserver):

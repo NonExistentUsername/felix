@@ -5,7 +5,6 @@ from .engine_components.economy_component import (
     BalanceFactory,
     EconomyEngineComponent,
     IEconomyEngineComponent,
-    PetBalanceAutoCreation,
 )
 from .engine_components.hunger_component import (
     HungerEngineComponent,
@@ -16,6 +15,7 @@ from .engine_components.pet_component import (
     ChickenPetFactory,
     DefaultDBPetFactory,
     IPetEngineComponent,
+    PetBalanceAutoCreation,
     PetEngineComponent,
     PetHungerAutoCreation,
     PetVivacityAutoCreation,
