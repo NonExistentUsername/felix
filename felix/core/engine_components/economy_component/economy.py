@@ -69,16 +69,10 @@ class BalanceFactory(IBalanceFactory):
         self.__id_generator: IUniqueIDGenerator = id_generator
 
     def create(self, owner_id: int) -> IBalance:
+        if self.get(owner_id=owner_id):
+            raise ValueError("Balance already created")
+
         with database_session() as db:
-            balance_instance: t.Optional[DBBalanceModel] = (
-                db.query(DBBalanceModel)
-                .filter(DBBalanceModel.owner_id == owner_id)
-                .first()
-            )
-
-            if balance_instance is not None:
-                raise ValueError("Chat already created")
-
             balance_instance = DBBalanceModel(
                 id=self.__id_generator.create_id(),
                 owner_id=owner_id,
