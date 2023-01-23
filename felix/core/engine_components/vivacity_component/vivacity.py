@@ -104,12 +104,12 @@ class VivacityFactory(IVivacityFactory):
             if owner_id:
                 db_query = db_query.filter(DBVivacityModel.owner_id == owner_id)
 
-            chat_instance: t.Optional[DBVivacityModel] = db_query.first()
+            vivacity_instance: t.Optional[DBVivacityModel] = db_query.first()
 
-            if chat_instance is None:
+            if vivacity_instance is None:
                 return None
 
-            return DBVivacity(chat_instance)
+            return DBVivacity(vivacity_instance)
 
 
 class VivacityEngineComponent(IVivacityEngineComponent, Observable):
