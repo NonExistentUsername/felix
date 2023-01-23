@@ -5,6 +5,7 @@ from .engine_components.hunger_component import (
     HungerEngineComponent,
     HungerFactory,
     IHungerEngineComponent,
+    PetHungerAutoCreation,
 )
 from .engine_components.pet_component import (
     ChickenPetFactory,
@@ -66,10 +67,15 @@ class PetsEngine(EngineRunMixin, IEngine):
         self.__di_conrainer.register_singleton(
             ITelegramChatManager, TelegramChatManager(self.__di_conrainer)
         )
+        self.__hunger_engine_component: IHungerEngineComponent = HungerEngineComponent(
+            HungerFactory(self.__di_conrainer)
+        )
         self.__di_conrainer.register_singleton(
             IHungerEngineComponent,
-            HungerEngineComponent(HungerFactory(self.__di_conrainer)),
+            self.__hunger_engine_component,
         )
+        pet_hunger_auto_creation = PetHungerAutoCreation(self.__hunger_engine_component)
+        self.__pet_component.add_observer(pet_hunger_auto_creation)
         self.__di_conrainer.register_singleton(
             IVivacityEngineComponent,
             VivacityEngineComponent(VivacityFactory(self.__di_conrainer)),
