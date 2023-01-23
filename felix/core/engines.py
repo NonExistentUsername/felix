@@ -59,7 +59,7 @@ class PetsEngine(EngineRunMixin, IEngine):
         self.__di_conrainer.register_singleton(IUniqueIDGenerator, uuid1_generator)
 
         self.__pet_component = PetEngineComponent(
-            DefaultDBPetFactory(self.__di_conrainer, "chicken")
+            DefaultDBPetFactory(self.__di_conrainer, "cat")
         )
         self.__di_conrainer.register_singleton(
             IPetEngineComponent, self.__pet_component
