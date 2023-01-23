@@ -104,12 +104,12 @@ class HungerFactory(IHungerFactory):
             if owner_id:
                 db_query = db_query.filter(DBHungerModel.owner_id == owner_id)
 
-            chat_instance: t.Optional[DBHungerModel] = db_query.first()
+            hunger_instance: t.Optional[DBHungerModel] = db_query.first()
 
-            if chat_instance is None:
+            if hunger_instance is None:
                 return None
 
-            return DBHunger(chat_instance)
+            return DBHunger(hunger_instance)
 
 
 class HungerEngineComponent(IHungerEngineComponent, Observable):
