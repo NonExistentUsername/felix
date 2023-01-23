@@ -23,7 +23,7 @@ services:
     container_name: felix-db
     hostname: db
     expose:
-      - 3306
+      - 3306:3306
     env_file:
       - .env.dev
     volumes:
@@ -34,6 +34,7 @@ services:
 
 volumes:
   dev-db:
+
 
 networks:
   backend-network:
