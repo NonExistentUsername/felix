@@ -45,6 +45,15 @@ class EconomyController(IObserver):
             balance_engine_component
         )
 
+        pet_engine_component: t.Optional[
+            IPetEngineComponent
+        ] = di_container.get_singleton(IPetEngineComponent)
+
+        if pet_engine_component is None:
+            raise ValueError("Can't get engine component for pets")
+
+        self.__pet_engine_component: IPetEngineComponent = pet_engine_component
+
         command_observable_component.add_observer(self)
 
     def __get_or_create_chat(self, chat_id: int) -> ITelegramChat:
@@ -60,15 +69,22 @@ class EconomyController(IObserver):
     def __show_balance_command(self, event: BotCommandEvent) -> None:
         chat_instance: ITelegramChat = self.__get_or_create_chat(event.chat_id)
 
-        balance: t.Optional[IBalance] = self.__balance_engine_component.get_balance(
+        pet: t.Optional[IPet] = self.__pet_engine_component.get_pet(
             chat_instance.get_id()
         )
 
-        if not balance:
+        if not pet:
             tbot.send_message(
                 chat_instance.chat_id,
                 txt(chat_instance.language_code, "create_pet_first"),
             )
+            return
+
+        balance: t.Optional[IBalance] = self.__balance_engine_component.get_balance(
+            pet.get_id()
+        )
+
+        if not balance:
             return
 
         tbot.send_message(
