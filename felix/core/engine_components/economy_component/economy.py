@@ -114,7 +114,7 @@ class BalanceFactory(IBalanceFactory):
             return DBBalance(balance_instance)
 
 
-class EconomyEngineComponent(IEconomyEngineComponent):
+class EconomyEngineComponent(IEconomyEngineComponent, Observable):
     def __init__(self, balance_factory: IBalanceFactory) -> None:
         super().__init__()
         self.__balance_factory = balance_factory
@@ -135,3 +135,6 @@ class EconomyEngineComponent(IEconomyEngineComponent):
         object_id: t.Optional[int] = None,
     ) -> t.Optional[IBalance]:
         return self.__balance_factory.get(owner_id=owner_id, object_id=object_id)
+
+    def update_state(self, time_delta: float) -> None:
+        pass
