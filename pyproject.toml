@@ -10,6 +10,7 @@ python = "^3.10"
 pytelegrambotapi = "^4.9.0"
 sqlalchemy = "^1.4.46"
 pymysql = "^1.0.2"
+alembic = "^1.9.2"
 
 
 [tool.poetry.group.dev.dependencies]
