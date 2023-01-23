@@ -87,7 +87,7 @@ class BalanceFactory(IBalanceFactory):
             db.commit()
             db.refresh(balance_instance)
 
-            return DBBalanceModel(balance_instance)
+            return DBBalance(balance_instance)
 
     def get(
         self,
