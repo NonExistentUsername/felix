@@ -60,9 +60,16 @@ class EconomyController(IObserver):
     def __show_balance_command(self, event: BotCommandEvent) -> None:
         chat_instance: ITelegramChat = self.__get_or_create_chat(event.chat_id)
 
-        balance: IBalance = self.__balance_engine_component.create_or_get_balance(
+        balance: t.Optional[IBalance] = self.__balance_engine_component.get_balance(
             chat_instance.get_id()
         )
+
+        if not balance:
+            tbot.send_message(
+                chat_instance.chat_id,
+                txt(chat_instance.language_code, "create_pet_first"),
+            )
+            return
 
         tbot.send_message(
             chat_instance.chat_id,

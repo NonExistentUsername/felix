@@ -189,6 +189,13 @@ class PetsController(IObserver):
     def __get_pet_command(self, event: BotCommandEvent) -> None:
         chat_instance: ITelegramChat = self.__get_or_create_chat(event.chat_id)
 
+        if self.__pet_engine_component.get_pet(chat_instance.get_id()) is None:
+            tbot.send_message(
+                chat_instance.chat_id,
+                txt(chat_instance.language_code, "create_pet_first"),
+            )
+            return
+
         tbot.send_message(event.chat_id, self.__render_pets_info(chat_instance))
 
     def notify(self, event: IEvent) -> None:
