@@ -5,6 +5,7 @@ from .engine_components.economy_component import (
     BalanceFactory,
     EconomyEngineComponent,
     IEconomyEngineComponent,
+    PetBalanceAutoCreation,
 )
 from .engine_components.hunger_component import (
     HungerEngineComponent,
@@ -96,6 +97,10 @@ class PetsEngine(EngineRunMixin, IEngine):
         self.__economy_engine_component: IEconomyEngineComponent = (
             EconomyEngineComponent(BalanceFactory(self.__di_conrainer))
         )
+        pet_balance_auto_creation = PetBalanceAutoCreation(
+            self.__economy_engine_component
+        )
+        self.__pet_component.add_observer(pet_balance_auto_creation)
         self.__di_conrainer.register_singleton(
             IEconomyEngineComponent, self.__economy_engine_component
         )
