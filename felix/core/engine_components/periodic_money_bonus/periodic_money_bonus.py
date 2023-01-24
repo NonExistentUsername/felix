@@ -57,7 +57,19 @@ class DBPeriodicMoneyBonusInfo(IPeriodicMoneyBonusInfo):
     @last_collected_at.setter
     def last_collected_at(self, new_value: datetime) -> t.Optional[datetime]:
         with database_session() as db:
-            pass
+            db_instance: t.Optional[DBPeriodicMoneyBonusInfoModel] = (
+                db.query(DBPeriodicMoneyBonusInfoModel)
+                .filter(DBPeriodicMoneyBonusInfoModel.id == self.__db_instance.id)
+                .first()
+            )
+
+            if db_instance is None:
+                return
+
+            self.__db_instance = db_instance
+            self.__db_instance.value = new_value
+            db.commit()
+            db.refresh(self.__db_instance)
 
 
 class Collect100CoinsEveryday(ICollectionMethod):
@@ -163,6 +175,8 @@ class PeriodicMoneyBonusEngineComponent(IPeriodicMoneyBonusEngineComponent, Obse
         value: Decimal = self.__collection_method.calc(
             periodic_money_bonus_info.last_collected_at
         )
+
+        periodic_money_bonus_info.last_collected_at = datetime.utcnow()
 
         return value
 
