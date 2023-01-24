@@ -31,6 +31,10 @@ class IBalanceFactory(ABC):
     ) -> t.Optional[IBalance]:
         pass
 
+    @abstractmethod
+    def delete(self, owner_id: int) -> IBalance:
+        pass
+
 
 class IEconomyEngineComponent(IEngineComponent):
     @abstractmethod
@@ -47,4 +51,8 @@ class IEconomyEngineComponent(IEngineComponent):
         owner_id: t.Optional[int] = None,
         object_id: t.Optional[int] = None,
     ) -> t.Optional[IBalance]:
+        pass
+
+    @abstractmethod
+    def delete_balance(self, owner_id: int) -> IBalance:
         pass

@@ -2,7 +2,7 @@ import typing as t
 from decimal import Context, Decimal
 
 from core.database import Base, database_session
-from core.general.unique_object import IUniqueIDGenerator
+from core.general.unique_object import IUniqueIDGenerator, LinkedUniqueObjectMixin
 from core.tools.dependency_injector import IDependencyInjector
 from core.tools.observer import Observable
 from sqlalchemy import DECIMAL, BigInteger, Column, Float, ForeignKey, Numeric, String
@@ -57,6 +57,22 @@ class DBBalance(IBalance):
             db.refresh(self.__db_instance)
 
 
+class DeletedBalance(IBalance, LinkedUniqueObjectMixin):
+    def __init__(self, db_instance: DBBalanceModel) -> None:
+        super().__init__(
+            id=int(db_instance.id), owner_id=int(db_instance.owner_id)  # type: ignore
+        )
+        self.__value = Decimal(db_instance.value)  # type: ignore
+
+    @property
+    def value(self) -> Decimal:
+        return self.__value
+
+    @value.setter
+    def value(self, new_value: Decimal) -> None:
+        raise ValueError("Can't set value for DeletedBalance")
+
+
 class BalanceFactory(IBalanceFactory):
     def __init__(self, di_container: IDependencyInjector) -> None:
         super().__init__()
@@ -107,6 +123,24 @@ class BalanceFactory(IBalanceFactory):
 
             return DBBalance(balance_instance)
 
+    def delete(self, owner_id: int) -> IBalance:
+        with database_session() as db:
+            db_instance: t.Optional[DBBalanceModel] = (
+                db.query(DBBalanceModel)
+                .filter(DBBalanceModel.owner_id == owner_id)
+                .first()
+            )
+
+            if db_instance is None:
+                raise ValueError("Balance not created")
+
+            balance: IBalance = DeletedBalance(db_instance)
+
+            db_instance.delete()
+            db.commit()
+
+            return balance
+
 
 class EconomyEngineComponent(IEconomyEngineComponent, Observable):
     def __init__(self, balance_factory: IBalanceFactory) -> None:
@@ -129,6 +163,9 @@ class EconomyEngineComponent(IEconomyEngineComponent, Observable):
         object_id: t.Optional[int] = None,
     ) -> t.Optional[IBalance]:
         return self.__balance_factory.get(owner_id=owner_id, object_id=object_id)
+
+    def delete_balance(self, owner_id: int) -> IBalance:
+        return self.__balance_factory.delete(owner_id)
 
     def update_state(self, time_delta: float) -> None:
         pass
