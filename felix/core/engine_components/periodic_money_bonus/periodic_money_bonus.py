@@ -52,7 +52,9 @@ class DBPeriodicMoneyBonusInfo(IPeriodicMoneyBonusInfo):
 
     @property
     def last_collected_at(self) -> t.Optional[datetime]:
-        return datetime(self.__db_instance)  # type: ignore
+        if self.__db_instance.last_collected_at is None:
+            return None
+        return self.__db_instance.last_collected_at  # type: ignore
 
     @last_collected_at.setter
     def last_collected_at(self, new_value: datetime) -> t.Optional[datetime]:
@@ -67,7 +69,7 @@ class DBPeriodicMoneyBonusInfo(IPeriodicMoneyBonusInfo):
                 return
 
             self.__db_instance = db_instance
-            self.__db_instance.value = new_value
+            self.__db_instance.last_collected_at = new_value
             db.commit()
             db.refresh(self.__db_instance)
 
