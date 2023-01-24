@@ -1,5 +1,5 @@
 from core.engine_components.economy_component.interfaces import IEconomyEngineComponent
-from core.engine_components.pet_component import PetCreated
+from core.engine_components.pet_component import PetCreated, PetDeleted
 from core.tools.observer import IEvent, IObserver
 
 
@@ -11,5 +11,9 @@ class PetBalanceAutoCreation(IObserver):
     def notify(self, event: IEvent) -> None:
         if isinstance(event, PetCreated):
             self.__economy_engine_component.create_balance(
+                owner_id=event.get_instance().get_id()
+            )
+        elif isinstance(event, PetDeleted):
+            self.__economy_engine_component.delete_balance(
                 owner_id=event.get_instance().get_id()
             )
