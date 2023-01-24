@@ -26,8 +26,16 @@ class IPetCustomizationFactory(ABC):
     def create(self, pet_id: int) -> IPetCustomization:
         pass
 
+    @abstractmethod
+    def delete(self, pet_id: int) -> IPetCustomization:
+        pass
+
 
 class IPetCustomizationEngineComponent(IEngineComponent):
     @abstractmethod
     def get_pet_customization(self, pet_id: int) -> IPetCustomization:
+        pass
+
+    @abstractmethod
+    def delete_pet_customization(self, pet_id: int) -> IPetCustomization:
         pass

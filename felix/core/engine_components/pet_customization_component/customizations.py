@@ -1,7 +1,7 @@
 import typing as t
 
 from core.database import Base, database_session
-from core.general.unique_object import IUniqueIDGenerator
+from core.general.unique_object import IUniqueIDGenerator, LinkedUniqueObjectMixin
 from core.tools.dependency_injector import IDependencyInjector
 from core.tools.observer import IEvent, IObserver, Observable
 from sqlalchemy import DECIMAL, BigInteger, Column, ForeignKey, Numeric, String
@@ -67,6 +67,20 @@ class DBPetCustomization(IPetCustomization):
             db.refresh(self.__instance)
 
 
+class DeletedPetCustomization(IPetCustomization, LinkedUniqueObjectMixin):
+    def __init__(self, db_instance: DBPetCustomizationModel) -> None:
+        super().__init__(id=int(db_instance.id), owner_id=int(db_instance.owner_id))  # type: ignore
+        self.__name = str(db_instance.name)
+
+    @property
+    def name(self) -> str:
+        return self.__name
+
+    @name.setter
+    def name(self, new_name: str) -> None:
+        raise ValueError("Can't set name for DeletedPetCustomization")
+
+
 class PetCustomizationFactory(IPetCustomizationFactory):
     def __init__(self, di_container: IDependencyInjector, default_name: str) -> None:
         super().__init__()
@@ -103,6 +117,24 @@ class PetCustomizationFactory(IPetCustomizationFactory):
             db.commit()
             db.refresh(instance)
             return DBPetCustomization(instance)
+
+    def delete(self, pet_id: int) -> IPetCustomization:
+        with database_session() as db:
+            db_instance: t.Optional[DBPetCustomizationModel] = (
+                db.query(DBPetCustomizationModel)
+                .filter(DBPetCustomizationModel.owner_id == pet_id)
+                .first()
+            )
+
+            if db_instance is None:
+                raise ValueError("PetCustomization not created")
+
+            pet_customization: IPetCustomization = DeletedPetCustomization(db_instance)
+
+            db_instance.delete()
+            db.commit()
+
+            return pet_customization
 
 
 class ObservableCustomization(IPetCustomization, Observable):
@@ -148,6 +180,9 @@ class PetCustomizationEngineComponent(
         instance.add_observer(self)
 
         return instance
+
+    def delete_pet_customization(self, pet_id: int) -> IPetCustomization:
+        return self.__pet_customization_factory.delete(pet_id)
 
     def update_state(self, time_delta: float) -> None:
         pass
