@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from decimal import Decimal
 
 from core.database import Base, database_session
-from core.general.unique_object import IUniqueIDGenerator
+from core.general.unique_object import IUniqueIDGenerator, LinkedUniqueObjectMixin
 from core.tools.dependency_injector import IDependencyInjector
 from core.tools.observer import Observable
 from sqlalchemy import (
@@ -94,6 +94,22 @@ class ProtectFieldsDecorator(IPeriodicMoneyBonusInfo):
         raise ValueError("Can't change last_collected_at value")
 
 
+class DeletedPeriodicMoneyBonusInfo(IPeriodicMoneyBonusInfo, LinkedUniqueObjectMixin):
+    def __init__(self, db_instance: DBPeriodicMoneyBonusInfoModel) -> None:
+        super().__init__(id=int(db_instance.id), owner_id=int(db_instance.owner_id))  # type: ignore
+        self.__last_collected_at: datetime = db_instance.last_collected_at  # type: ignore
+
+    @property
+    def last_collected_at(self) -> t.Optional[datetime]:
+        return self.__last_collected_at
+
+    @last_collected_at.setter
+    def last_collected_at(self, new_value: datetime) -> t.Optional[datetime]:
+        raise ValueError(
+            "Can't change last_collected_at for DeletedPeriodicMoneyBonusInfo"
+        )
+
+
 class Collect100CoinsEveryday(ICollectionMethod):
     def can_collect(self, last_collected_at: t.Optional[datetime]) -> bool:
         if not last_collected_at:
@@ -157,6 +173,24 @@ class PeriodicDBMoneyBonusInfoFactory(IPeriodicMoneyBonusInfoFactory):
 
             return DBPeriodicMoneyBonusInfo(vivacity_instance)
 
+    def delete(self, owner_id: int) -> IPeriodicMoneyBonusInfo:
+        with database_session() as db:
+            db_instance: t.Optional[DBPeriodicMoneyBonusInfoModel] = (
+                db.query(DBPeriodicMoneyBonusInfoModel)
+                .filter(DBPeriodicMoneyBonusInfoModel.owner_id == owner_id)
+                .first()
+            )
+
+            if db_instance is None:
+                raise ValueError("PeriodicMoneyBonusInfo not created")
+
+            periodic_money_bonus_info = DeletedPeriodicMoneyBonusInfo(db_instance)
+
+            db_instance.delete()
+            db.commit()
+
+            return periodic_money_bonus_info
+
 
 class PeriodicMoneyBonusEngineComponent(IPeriodicMoneyBonusEngineComponent, Observable):
     def __init__(
@@ -213,6 +247,11 @@ class PeriodicMoneyBonusEngineComponent(IPeriodicMoneyBonusEngineComponent, Obse
             return None
 
         return ProtectFieldsDecorator(periodic_money_bonus_info)
+
+    def delete_periodic_money_bonus_info(
+        self, owner_id: int
+    ) -> IPeriodicMoneyBonusInfo:
+        return self.__periodic_money_bonus_info_factory.delete(owner_id)
 
     def update_state(self, time_delta: float) -> None:
         pass

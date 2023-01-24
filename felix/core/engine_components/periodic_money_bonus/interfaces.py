@@ -38,6 +38,10 @@ class IPeriodicMoneyBonusInfoFactory(ABC):
     def get(self, owner_id: int) -> t.Optional[IPeriodicMoneyBonusInfo]:
         pass
 
+    @abstractmethod
+    def delete(self, owner_id: int) -> IPeriodicMoneyBonusInfo:
+        pass
+
 
 class IPeriodicMoneyBonusEngineComponent(IEngineComponent):
     @abstractmethod
@@ -56,4 +60,10 @@ class IPeriodicMoneyBonusEngineComponent(IEngineComponent):
     def get_periodic_money_bonus_info(
         self, owner_id: int
     ) -> t.Optional[IPeriodicMoneyBonusInfo]:
+        pass
+
+    @abstractmethod
+    def delete_periodic_money_bonus_info(
+        self, owner_id: int
+    ) -> IPeriodicMoneyBonusInfo:
         pass
