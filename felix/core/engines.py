@@ -11,6 +11,12 @@ from .engine_components.hunger_component import (
     HungerFactory,
     IHungerEngineComponent,
 )
+from .engine_components.periodic_money_bonus import (
+    Collect100CoinsEveryday,
+    IPeriodicMoneyBonusEngineComponent,
+    PeriodicDBMoneyBonusInfoFactory,
+    PeriodicMoneyBonusEngineComponent,
+)
 from .engine_components.pet_component import (
     ChickenPetFactory,
     DefaultDBPetFactory,
@@ -103,6 +109,16 @@ class PetsEngine(EngineRunMixin, IEngine):
         self.__pet_component.add_observer(pet_balance_auto_creation)
         self.__di_conrainer.register_singleton(
             IEconomyEngineComponent, self.__economy_engine_component
+        )
+        self.__periodic_money_bonus_engine_component = (
+            PeriodicMoneyBonusEngineComponent(
+                PeriodicDBMoneyBonusInfoFactory(self.__di_conrainer),
+                Collect100CoinsEveryday(),
+            )
+        )
+        self.__di_conrainer.register_singleton(
+            IPeriodicMoneyBonusEngineComponent,
+            self.__periodic_money_bonus_engine_component,
         )
         self.__di_conrainer.register_singleton(logging.Logger, self.__create_logger())
 
