@@ -165,3 +165,6 @@ class PeriodicMoneyBonusEngineComponent(IPeriodicMoneyBonusEngineComponent, Obse
         )
 
         return value
+
+    def update_state(self, time_delta: float) -> None:
+        pass
