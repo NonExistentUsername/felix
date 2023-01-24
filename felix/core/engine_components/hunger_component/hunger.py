@@ -141,7 +141,7 @@ class HungerFactory(IHungerFactory):
 
             hunger: IHunger = DeletedHunger(db_instance)
 
-            db_instance.delete()
+            db.delete(db_instance)
             db.commit()
 
             return hunger

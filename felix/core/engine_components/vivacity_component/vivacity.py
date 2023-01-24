@@ -141,7 +141,7 @@ class VivacityFactory(IVivacityFactory):
 
             vivacity: IVivacity = DeletedVivacity(db_instance)
 
-            db_instance.delete()
+            db.delete(db_instance)
             db.commit()
 
             return vivacity

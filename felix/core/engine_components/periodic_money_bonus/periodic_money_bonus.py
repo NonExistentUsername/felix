@@ -186,7 +186,7 @@ class PeriodicDBMoneyBonusInfoFactory(IPeriodicMoneyBonusInfoFactory):
 
             periodic_money_bonus_info = DeletedPeriodicMoneyBonusInfo(db_instance)
 
-            db_instance.delete()
+            db.delete(db_instance)
             db.commit()
 
             return periodic_money_bonus_info

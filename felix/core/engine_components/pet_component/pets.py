@@ -127,7 +127,7 @@ class DefaultDBPetFactory(DefaultPetFactoryBase):
 
             pet: IPet = DeletedPet(instance)
 
-            instance.delete()
+            db.delete(instance)
             db.commit()
 
             return pet

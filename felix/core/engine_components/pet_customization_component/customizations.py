@@ -131,7 +131,7 @@ class PetCustomizationFactory(IPetCustomizationFactory):
 
             pet_customization: IPetCustomization = DeletedPetCustomization(db_instance)
 
-            db_instance.delete()
+            db.delete(db_instance)
             db.commit()
 
             return pet_customization

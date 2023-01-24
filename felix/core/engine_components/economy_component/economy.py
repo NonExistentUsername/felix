@@ -136,7 +136,7 @@ class BalanceFactory(IBalanceFactory):
 
             balance: IBalance = DeletedBalance(db_instance)
 
-            db_instance.delete()
+            db.delete(db_instance)
             db.commit()
 
             return balance
