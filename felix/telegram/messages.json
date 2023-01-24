@@ -17,7 +17,7 @@
         "templates.pet_name": "Ім'я: {name}",
         "templates.pet_hunger": "Голод: {hunger}%",
         "templates.pet_vivacity": "Бадьорість: {vivacity}%",
-        "templates.balance": "Баланс: {balance} монет"
+        "templates.balance": "Баланс: {balance} карбованців"
     },
     "en": {
         "language_name": "English",
