@@ -172,7 +172,7 @@ class HungerEngineComponent(IHungerEngineComponent, Observable):
     ) -> t.Optional[IHunger]:
         return self.__hunger_factory.get(owner_id, object_id)
 
-    def delete(self, owner_id: int) -> IHunger:
+    def delete_hunger(self, owner_id: int) -> IHunger:
         return self.__hunger_factory.delete(owner_id)
 
     def update_state(self, time_delta: float) -> None:

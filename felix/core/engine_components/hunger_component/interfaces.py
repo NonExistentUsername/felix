@@ -53,5 +53,5 @@ class IHungerEngineComponent(IEngineComponent):
         pass
 
     @abstractmethod
-    def delete(self, owner_id: int) -> IHunger:
+    def delete_hunger(self, owner_id: int) -> IHunger:
         pass
