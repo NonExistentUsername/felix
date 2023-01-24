@@ -30,6 +30,10 @@ class IHungerFactory(ABC):
     ) -> t.Optional[IHunger]:
         pass
 
+    @abstractmethod
+    def delete(self, owner_id: int) -> IHunger:
+        pass
+
 
 class IHungerEngineComponent(IEngineComponent):
     @abstractmethod
@@ -46,4 +50,8 @@ class IHungerEngineComponent(IEngineComponent):
         owner_id: t.Optional[int] = None,
         object_id: t.Optional[int] = None,
     ) -> t.Optional[IHunger]:
+        pass
+
+    @abstractmethod
+    def delete(self, owner_id: int) -> IHunger:
         pass

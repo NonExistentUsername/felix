@@ -1,7 +1,7 @@
 import typing as t
 
 from core.database import Base, database_session
-from core.general.unique_object import IUniqueIDGenerator
+from core.general.unique_object import IUniqueIDGenerator, LinkedUniqueObjectMixin
 from core.tools.dependency_injector import IDependencyInjector
 from core.tools.observer import Observable
 from sqlalchemy import DECIMAL, BigInteger, Column, Float, ForeignKey, Numeric, String
@@ -53,6 +53,20 @@ class DBHunger(IHunger):
             self.__db_instance.value = new_value
             db.commit()
             db.refresh(self.__db_instance)
+
+
+class DeletedHunger(IHunger, LinkedUniqueObjectMixin):
+    def __init__(self, db_instance: DBHungerModel) -> None:
+        super().__init__(id=int(db_instance.id), owner_id=int(db_instance.owner_id))  # type: ignore
+        self.__value = float(db_instance.value)  # type: ignore
+
+    @property
+    def value(self) -> float:
+        return self.__value
+
+    @value.setter
+    def value(self, new_value: float) -> None:
+        raise ValueError("Can't set value for DeletedHunger")
 
 
 class HungerFactory(IHungerFactory):
@@ -114,6 +128,24 @@ class HungerFactory(IHungerFactory):
 
             return DBHunger(hunger_instance)
 
+    def delete(self, owner_id: int) -> IHunger:
+        with database_session() as db:
+            db_instance: t.Optional[DBHungerModel] = (
+                db.query(DBHungerModel)
+                .filter(DBHungerModel.owner_id == owner_id)
+                .first()
+            )
+
+            if db_instance is None:
+                raise ValueError("Hunger object not created")
+
+            hunger: IHunger = DeletedHunger(db_instance)
+
+            db_instance.delete()
+            db.commit()
+
+            return hunger
+
 
 class HungerEngineComponent(IHungerEngineComponent, Observable):
     def __init__(self, hunger_factory: IHungerFactory) -> None:
@@ -139,6 +171,9 @@ class HungerEngineComponent(IHungerEngineComponent, Observable):
         object_id: t.Optional[int] = None,
     ) -> t.Optional[IHunger]:
         return self.__hunger_factory.get(owner_id, object_id)
+
+    def delete(self, owner_id: int) -> IHunger:
+        return self.__hunger_factory.delete(owner_id)
 
     def update_state(self, time_delta: float) -> None:
         pass
