@@ -72,6 +72,26 @@ class DBPeriodicMoneyBonusInfo(IPeriodicMoneyBonusInfo):
             db.refresh(self.__db_instance)
 
 
+class ProtectFieldsDecorator(IPeriodicMoneyBonusInfo):
+    def __init__(self, instance: IPeriodicMoneyBonusInfo) -> None:
+        super().__init__()
+        self.__instance = instance
+
+    def get_id(self) -> int:
+        return self.__instance.get_id()
+
+    def get_owner_id(self) -> int:
+        return self.__instance.get_owner_id()
+
+    @property
+    def last_collected_at(self) -> t.Optional[datetime]:
+        return self.__instance.last_collected_at
+
+    @last_collected_at.setter
+    def last_collected_at(self, new_value: datetime) -> t.Optional[datetime]:
+        raise ValueError("Can't change last_collected_at value")
+
+
 class Collect100CoinsEveryday(ICollectionMethod):
     def can_collect(self, last_collected_at: t.Optional[datetime]) -> bool:
         if not last_collected_at:
@@ -179,6 +199,18 @@ class PeriodicMoneyBonusEngineComponent(IPeriodicMoneyBonusEngineComponent, Obse
         periodic_money_bonus_info.last_collected_at = datetime.utcnow()
 
         return value
+
+    def get_periodic_money_bonus_info(
+        self, owner_id: int
+    ) -> t.Optional[IPeriodicMoneyBonusInfo]:
+        periodic_money_bonus_info: t.Optional[
+            IPeriodicMoneyBonusInfo
+        ] = self.__periodic_money_bonus_info_factory.get(owner_id)
+
+        if not periodic_money_bonus_info:
+            return None
+
+        return ProtectFieldsDecorator(periodic_money_bonus_info)
 
     def update_state(self, time_delta: float) -> None:
         pass

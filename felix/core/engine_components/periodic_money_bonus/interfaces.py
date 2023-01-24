@@ -51,3 +51,9 @@ class IPeriodicMoneyBonusEngineComponent(IEngineComponent):
     @abstractmethod
     def collect(self, owner_id: int) -> Decimal:
         pass
+
+    @abstractmethod
+    def get_periodic_money_bonus_info(
+        self, owner_id: int
+    ) -> t.Optional[IPeriodicMoneyBonusInfo]:
+        pass
