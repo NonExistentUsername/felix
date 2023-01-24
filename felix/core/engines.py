@@ -121,10 +121,10 @@ class PetsEngine(EngineRunMixin, IEngine):
             IPeriodicMoneyBonusEngineComponent,
             self.__periodic_money_bonus_engine_component,
         )
-        periodict_money_bonus_auto_creation = PetPeriodicMoneyBonusAutoCreation(
+        periodic_money_bonus_auto_creation = PetPeriodicMoneyBonusAutoCreation(
             self.__periodic_money_bonus_engine_component
         )
-        self.__pet_component.add_observer(periodict_money_bonus_auto_creation)
+        self.__pet_component.add_observer(periodic_money_bonus_auto_creation)
         self.__di_conrainer.register_singleton(logging.Logger, self.__create_logger())
 
     def update_state(self, time_delta: float) -> None:
