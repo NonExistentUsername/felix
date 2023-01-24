@@ -1,1 +1,1 @@
-from .events import ObjectCreated
+from .events import ObjectCreated, ObjectDeleted

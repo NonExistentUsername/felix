@@ -25,6 +25,10 @@ class IPetFactory(ABC):
     ) -> t.Optional[IPet]:
         pass
 
+    @abstractmethod
+    def delete_pet(self, owner_id: int) -> IPet:
+        pass
+
 
 class IPetEngineComponent(IEngineComponent):
     @abstractmethod
@@ -37,4 +41,8 @@ class IPetEngineComponent(IEngineComponent):
         owner_id: t.Optional[int] = None,
         pet_id: t.Optional[int] = None,
     ) -> t.Optional[IPet]:
+        pass
+
+    @abstractmethod
+    def delete_pet(self, owner_id: int) -> None:
         pass

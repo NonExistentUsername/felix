@@ -5,7 +5,7 @@ from core.general.unique_object import IUniqueIDGenerator, LinkedUniqueObjectMix
 from core.tools import IDependencyInjector, Observable
 from sqlalchemy import DECIMAL, BigInteger, Column, ForeignKey, Numeric, String
 
-from .events import PetCreated
+from .events import PetCreated, PetDeleted
 from .interfaces import IPet, IPetEngineComponent, IPetFactory
 
 
@@ -41,6 +41,16 @@ class DBPet(IPet, LinkedUniqueObjectMixin):
     @property
     def type(self) -> str:
         return str(self.__db_instance.type)
+
+
+class DeletedPet(IPet, LinkedUniqueObjectMixin):
+    def __init__(self, instance: DBPetModel) -> None:
+        super().__init__(id=int(instance.id), owner_id=int(instance.owner_id))  # type: ignore
+        self.__type = str(instance.type)
+
+    @property
+    def type(self) -> str:
+        return self.__type
 
 
 class DefaultPetFactoryBase(IPetFactory):
@@ -106,6 +116,22 @@ class DefaultDBPetFactory(DefaultPetFactoryBase):
 
             return DBPet(chat_instance)
 
+    def delete_pet(self, owner_id: int) -> IPet:
+        with database_session() as db:
+            instance: t.Optional[DBPetModel] = (
+                db.query(DBPetModel).filter(DBPetModel.owner_id == owner_id).first()
+            )
+
+            if not instance:
+                raise ValueError("Pet not created")
+
+            pet: IPet = DeletedPet(instance)
+
+            instance.delete()
+            db.commit()
+
+            return pet
+
 
 class ChickenPetFactory(DefaultPetFactory):
     def __init__(self, di_container: IDependencyInjector) -> None:
@@ -135,3 +161,7 @@ class PetEngineComponent(IPetEngineComponent, Observable):
 
     def update_state(self, time_delta: float) -> None:
         pass
+
+    def delete_pet(self, owner_id: int) -> None:
+        pet: IPet = self.__pet_factory.delete_pet(owner_id)
+        self.notify(PetDeleted(pet))
