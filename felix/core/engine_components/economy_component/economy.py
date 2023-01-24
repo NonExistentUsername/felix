@@ -21,7 +21,7 @@ class DBBalanceModel(Base):
         autoincrement=False,
     )
     owner_id = Column(Numeric(40, 0), nullable=False)
-    value = Column(Numeric(18, 3), nullable=False, server_default="0")
+    value = Column(Numeric(20, 0), nullable=False, server_default="0")
 
 
 class DBBalance(IBalance):
