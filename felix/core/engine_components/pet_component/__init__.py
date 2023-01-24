@@ -1,4 +1,4 @@
-from .events import PetCreated
+from .events import PetCreated, PetDeleted
 from .interfaces import IPet, IPetEngineComponent, IPetFactory
 from .pet_balance import PetBalanceAutoCreation
 from .pet_hunger import PetHungerAutoCreation
