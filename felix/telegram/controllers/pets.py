@@ -93,6 +93,18 @@ class PetsController(IObserver):
 
         self.__pet_engine_component.create_pet(chat_instance.get_id())
 
+    def __delete_pet_command(self, event: BotCommandEvent) -> None:
+        chat_instance: ITelegramChat = self.__get_or_create_chat(event.chat_id)
+
+        if self.__pet_engine_component.get_pet(chat_instance.get_id()) is None:
+            tbot.send_message(
+                event.chat_id,
+                txt(chat_instance.language_code, "create_pet_first"),
+            )
+            return
+
+        self.__pet_engine_component.delete_pet(chat_instance.get_id())
+
     def __pet_set_name_command(self, event: BotCommandEvent) -> None:
         try:
             new_name: str = event.kwargs["new_name"]
@@ -208,3 +220,5 @@ class PetsController(IObserver):
             self.__pet_set_name_command(event)
         elif event.command == "get_pet":
             self.__get_pet_command(event)
+        elif event.command == "delete_pet":
+            self.__delete_pet_command(event)

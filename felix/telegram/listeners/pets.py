@@ -2,7 +2,12 @@ import logging
 import typing as t
 from abc import ABC, abstractmethod
 
-from core.engine_components.pet_component import IPet, IPetEngineComponent, PetCreated
+from core.engine_components.pet_component import (
+    IPet,
+    IPetEngineComponent,
+    PetCreated,
+    PetDeleted,
+)
 from core.engine_components.pet_customization_component import (
     IPetCustomizationEngineComponent,
 )
@@ -94,4 +99,17 @@ class PetsListener(IObserver):
                 txt(chat_instance.language_code, "pets_name_changed").format(
                     new_name=event.new_name
                 ),
+            )
+        elif isinstance(event, PetDeleted):
+            chat_instance: t.Optional[
+                ITelegramChat
+            ] = self.__telegram_chat_manager.get_chat(
+                object_id=event.get_instance().get_owner_id()
+            )
+
+            if chat_instance is None:
+                return
+
+            tbot.send_message(
+                chat_instance.chat_id, txt(chat_instance.language_code, "pet_deleted")
             )

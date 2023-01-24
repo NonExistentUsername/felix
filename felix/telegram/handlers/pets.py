@@ -14,6 +14,15 @@ def create_pet_command(message: types.Message) -> None:
     )
 
 
+@tbot.message_handler(commands=["delete_pet"])
+def delete_pet_command(message: types.Message) -> None:
+    command_observable_component.notify(
+        BotCommandEvent(
+            "delete_pet", chat_id=message.chat.id, user_id=message.from_user.id
+        )
+    )
+
+
 @tbot.message_handler(commands=["set_pet_name"])
 def set_pet_name_command(message: types.Message) -> None:
     command_observable_component.notify(
