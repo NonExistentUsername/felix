@@ -16,6 +16,8 @@ from .controllers import (
 )
 from .listeners import PetsListener
 
+ENABLE_WEBHOOKS = os.getenv("ENABLE_WEBHOOKS") == "True"
+
 
 class TelegramController(IController):
     def __init_controllers(self, engine_di_container: IDependencyInjector) -> None:
@@ -35,4 +37,9 @@ class TelegramController(IController):
         self.__init_listeners(engine_di_container)
 
     def start(self) -> None:
-        tbot.infinity_polling()
+        if ENABLE_WEBHOOKS:
+            from webhooks import run_app
+
+            run_app()
+        else:
+            tbot.infinity_polling()
