@@ -41,17 +41,18 @@ def webhook():
         flask.abort(403)
 
 
-tbot.remove_webhook()
+def run_app():
+    tbot.remove_webhook()
 
-time.sleep(0.1)
+    time.sleep(0.1)
 
-tbot.set_webhook(
-    url=WEBHOOK_URL_BASE + WEBHOOK_URL_PATH, certificate=open(WEBHOOK_SSL_CERT, "r")
-)
+    tbot.set_webhook(
+        url=WEBHOOK_URL_BASE + WEBHOOK_URL_PATH, certificate=open(WEBHOOK_SSL_CERT, "r")
+    )
 
-app.run(
-    host=WEBHOOK_LISTEN,
-    port=WEBHOOK_PORT,
-    ssl_context=(WEBHOOK_SSL_CERT, WEBHOOK_SSL_PRIV),
-    debug=True,
-)
+    app.run(
+        host=WEBHOOK_LISTEN,
+        port=WEBHOOK_PORT,
+        ssl_context=(WEBHOOK_SSL_CERT, WEBHOOK_SSL_PRIV),
+        debug=True,
+    )
