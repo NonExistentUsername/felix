@@ -8,8 +8,8 @@ services:
     restart: always
     entrypoint: /usr/src/app/entrypoint.sh
     command: python main.py
-    ports:
-      - 8443:8443
+    expose:
+      - 8443
     env_file:
       - .env.prod
     volumes:
@@ -31,9 +31,21 @@ services:
     networks:
       backend-network:
         ipv4_address: 10.5.0.4
-
+  nginx:
+    build: ./nginx/
+    container_name: felix-nginx
+    volumes:
+      - static_volume:/app/staticfiles/
+      - ./cert:/app/cert/
+    ports:
+      - 443:443
+      - 8443:8443
+    networks:
+      backend-network:
+        ipv4_address: 10.5.0.9
 volumes:
   prod-db:
+  static_volume:
 
 
 networks:
