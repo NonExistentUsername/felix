@@ -10,7 +10,7 @@ from .bot import tbot
 API_TOKEN = str(os.getenv("TG_BOT_TOKEN"))
 
 WEBHOOK_HOST = str(os.getenv("HOST"))
-WEBHOOK_PORT = 8443
+WEBHOOK_PORT = 8080
 WEBHOOK_LISTEN = "0.0.0.0"
 
 WEBHOOK_SSL_CERT = "/app/cert/ssl.crt"

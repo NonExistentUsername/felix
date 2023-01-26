@@ -8,8 +8,8 @@ services:
     restart: always
     entrypoint: /usr/src/app/entrypoint.sh
     command: python main.py
-    ports:
-      - 8443:8443
+    expose:
+      - 8080
     env_file:
       - .env.dev
     volumes:
