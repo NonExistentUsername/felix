@@ -54,6 +54,5 @@ def run_app():
     app.run(
         host=WEBHOOK_LISTEN,
         port=8080,
-        ssl_context=(WEBHOOK_SSL_CERT, WEBHOOK_SSL_PRIV),
         debug=DEBUG,
     )
