@@ -45,7 +45,7 @@ def webhook():
 def run_app():
     tbot.remove_webhook()
 
-    time.sleep(0.1)
+    time.sleep(1)
 
     tbot.set_webhook(
         url=WEBHOOK_URL_BASE + WEBHOOK_URL_PATH, certificate=open(WEBHOOK_SSL_CERT, "r")
