@@ -13,8 +13,8 @@ WEBHOOK_HOST = str(os.getenv("HOST"))
 WEBHOOK_PORT = 8443
 WEBHOOK_LISTEN = "0.0.0.0"
 
-WEBHOOK_SSL_CERT = "/cert/cert.pem"
-WEBHOOK_SSL_PRIV = "/cert/pkey.pem"
+WEBHOOK_SSL_CERT = "/app/cert/ssl.crt"
+WEBHOOK_SSL_PRIV = "/app/cert/ssl.key"
 
 WEBHOOK_URL_BASE = "https://%s:%s" % (WEBHOOK_HOST, WEBHOOK_PORT)
 WEBHOOK_URL_PATH = "/%s/" % (API_TOKEN)
