@@ -24,9 +24,9 @@ WEBHOOK_URL_PATH = "/%s/" % (API_TOKEN)
 app = flask.Flask(__name__)
 
 
-@app.route("/", methods=["GET", "HEAD"])
-def index():
-    return ""
+@app.route("/")
+def home():
+    return flask.render_template("example.html")
 
 
 @app.route(WEBHOOK_URL_PATH, methods=["POST"])

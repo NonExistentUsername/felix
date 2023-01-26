@@ -1,3 +1,4 @@
+import os
 import typing as t
 
 from core.engine_components.pet_component import IPetEngineComponent
@@ -7,9 +8,12 @@ from core.engine_components.telegram_components.chat_manager import (
 )
 from core.tools import IDependencyInjector, IObserver
 from core.tools.observer import IEvent
+from telebot import types as tgt
 from telegram import BotCommandEvent, tbot
 from telegram.handlers.start import command_observable_component
 from telegram.messages import txt
+
+HOST = str(os.getenv("HOST"))
 
 
 class StartController(IObserver):
@@ -43,6 +47,13 @@ class StartController(IObserver):
 
         if event.command == "start":
             chat_instance: ITelegramChat = self.__get_or_create_chat(event.chat_id)
+
+            tbot.set_chat_menu_button(
+                event.chat_id,
+                tgt.MenuButtonWebApp(
+                    "web_app", "menu", tgt.WebAppInfo("https://" + HOST + ":8443/")
+                ),
+            )
 
             tbot.send_message(
                 event.chat_id, txt(chat_instance.language_code, "start_message")
