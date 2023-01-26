@@ -7,10 +7,11 @@ import telebot
 
 from .bot import tbot
 
+DEBUG = os.getenv("DEBUG") == "True"
 API_TOKEN = str(os.getenv("TG_BOT_TOKEN"))
 
 WEBHOOK_HOST = str(os.getenv("HOST"))
-WEBHOOK_PORT = 8080
+WEBHOOK_PORT = 8443
 WEBHOOK_LISTEN = "0.0.0.0"
 
 WEBHOOK_SSL_CERT = "/app/cert/ssl.crt"
@@ -52,7 +53,7 @@ def run_app():
 
     app.run(
         host=WEBHOOK_LISTEN,
-        port=WEBHOOK_PORT,
+        port=8080,
         ssl_context=(WEBHOOK_SSL_CERT, WEBHOOK_SSL_PRIV),
-        debug=True,
+        debug=DEBUG,
     )
