@@ -38,7 +38,7 @@ class TelegramController(IController):
 
     def start(self) -> None:
         if ENABLE_WEBHOOKS:
-            from webhooks import run_app
+            from .webhooks import run_app
 
             run_app()
         else:
