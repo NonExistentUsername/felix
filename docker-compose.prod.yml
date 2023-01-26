@@ -9,7 +9,7 @@ services:
     entrypoint: /usr/src/app/entrypoint.sh
     command: python main.py
     expose:
-      - 8443
+      - 8080
     env_file:
       - .env.prod
     volumes:
