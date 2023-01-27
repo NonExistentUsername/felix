@@ -227,7 +227,6 @@ class PetsController(IObserver):
         tbot.send_message(
             event.chat_id,
             self.__render_pets_info(chat_instance),
-            reply_markup=self.__pet_info_markup(chat_instance),
         )
 
     def notify(self, event: IEvent) -> None:
