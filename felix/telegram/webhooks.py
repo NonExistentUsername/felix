@@ -26,7 +26,7 @@ app = flask.Flask(__name__)
 
 @app.route("/")
 def home():
-    return flask.render_template("example.html")
+    return ""
 
 
 @app.route(WEBHOOK_URL_PATH, methods=["POST"])
