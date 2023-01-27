@@ -23,6 +23,8 @@ from telegram import BotCallbackEvent, BotCommandEvent, tbot
 from telegram.handlers.pets import command_observable_component
 from telegram.messages import txt
 
+HOST = str(os.getenv("HOST"))
+
 
 class PetsController(IObserver):
     def __init__(self, engine_di_container: IDependencyInjector) -> None:
@@ -80,6 +82,20 @@ class PetsController(IObserver):
             return chat_instance
 
         return self.__telegram_chat_manager.create_chat(chat_id)
+
+    def __pet_info_markup(
+        self, chat_instance: ITelegramChat
+    ) -> tgt.InlineKeyboardMarkup:
+        markup = tgt.InlineKeyboardMarkup()
+
+        markup.add(
+            tgt.InlineKeyboardButton(
+                txt(chat_instance.language_code, "pet"),
+                web_app=tgt.WebAppInfo("https://" + HOST + ":8443/"),
+            )
+        )
+
+        return markup
 
     def __create_pet_command(self, event: BotCommandEvent) -> None:
         chat_instance: ITelegramChat = self.__get_or_create_chat(event.chat_id)
@@ -208,7 +224,11 @@ class PetsController(IObserver):
             )
             return
 
-        tbot.send_message(event.chat_id, self.__render_pets_info(chat_instance))
+        tbot.send_message(
+            event.chat_id,
+            self.__render_pets_info(chat_instance),
+            reply_markup=self.__pet_info_markup(chat_instance),
+        )
 
     def notify(self, event: IEvent) -> None:
         if not isinstance(event, BotCommandEvent):
