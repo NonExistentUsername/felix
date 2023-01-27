@@ -48,12 +48,12 @@ class StartController(IObserver):
         if event.command == "start":
             chat_instance: ITelegramChat = self.__get_or_create_chat(event.chat_id)
 
-            tbot.set_chat_menu_button(
-                event.chat_id,
-                tgt.MenuButtonWebApp(
-                    "web_app", "menu", tgt.WebAppInfo("https://" + HOST + ":8443/")
-                ),
-            )
+            # tbot.set_chat_menu_button(
+            #     event.chat_id,
+            #     tgt.MenuButtonWebApp(
+            #         "web_app", "menu", tgt.WebAppInfo("https://" + HOST + ":8443/")
+            #     ),
+            # )
 
             tbot.send_message(
                 event.chat_id, txt(chat_instance.language_code, "start_message")
